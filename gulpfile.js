@@ -1,49 +1,35 @@
-var gulp = require('gulp');
-var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
+var gulp       = require('gulp');
+var source     = require('vinyl-source-stream');
+var buffer     = require('vinyl-buffer');
 var browserify = require('browserify');
-var watchify = require('watchify');
-var concat = require('gulp-concat');
-var del = require('del');
-var less = require('gulp-less');
-var path = require('path');
+var uglify     = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
+var del        = require('del');
+var gutil      = require('gulp-util');
+var plumber    = require('gulp-plumber');
 
-gulp.task('clean', function () {
-  return del(
-    './dist/**'
-  );
-});
 
-gulp.task('browserify', function() {
-    var bundler = browserify({
-        entries: ['./app/index.js'],
-        debug: true,
-        cache: {}, packageCache: {}, fullPaths: true
-    });
-
-    var watcher  = watchify(bundler);
-
-    return watcher
-    .on('update', function () {
-        var updateStart = Date.now();
-        console.log('Updating!');
-        watcher.bundle()
-        .pipe(source('index.js'))
-    // This is where you add uglifying etc.
-        .pipe(gulp.dest('./dist/'));
-        console.log('Updated!', (Date.now() - updateStart) + 'ms');
+// https://www.timroes.de/2015/01/06/proper-error-handling-in-gulp-js/
+var gulp_src   = gulp.src;
+gulp.src       = function() {
+  return gulp_src.apply(gulp, arguments)
+    .pipe(plumber(function(error) {
+      gutil.log(gutil.colors.red('Error (' + error.plugin + '): ' + error.message));
+      this.emit('end');
     })
-    .bundle() // Create the initial bundle when starting the task
-    .pipe(source('index.js'))
-    .pipe(gulp.dest('./dist/'));
+  );
+};
+
+gulp.task('clean', function() {
+  return del('./app/dist/**/**')
+  });
+
+gulp.task('js', function() {
+  return browserify('./app/index.js', { debug: true }).bundle()
+    .pipe(source('vendor.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(uglify({ mangle: false, compress: false }))
+    .pipe(sourcemaps.write('/maps'))
+    .pipe(gulp.dest('./app/dist/'));
 });
-
-
-gulp.task('less', function () {
-  return gulp.src('./app/less/**/*.less')
-    .pipe(less({
-      paths: [ path.join(__dirname, 'less', 'includes') ]
-    }))
-    .pipe(gulp.dest('./dist/css'));
-});
-
-gulp.task('default', ['clean', 'browserify', 'less']);
