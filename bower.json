@@ -1,0 +1,17 @@
+{
+  "name": "27341f",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "59023g <m.edward.pierce@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
