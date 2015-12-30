@@ -25,7 +25,6 @@ request
   })
   .on('response', function(response) {
     console.log(response.statusCode); // 200
-    console.log(response.headers['content-type']);
   })
   .pipe(fs.createWriteStream('data.json'));
 
