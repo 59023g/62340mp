@@ -1,11 +1,13 @@
 var React = require('react');
-var PropTypes = React.PropTypes;
 var _ = require('lodash');
 
 
 module.exports = React.createClass({
     getInitialState: function() {
-      return { stockHoldings: '', isNumber: false };
+      return {
+        stockHoldings: '',
+        isNumber: false
+      };
     },
     handleStockHoldingsChange: function(e) {
       // todo - check out React.PropTypes to check type
