@@ -4,7 +4,11 @@ var express = require('express'),
     http = require('http'),
     request = require('request'),
     fs = require('fs'),
-    routes = require('./routes');
+    routes = require('./routes'),
+    React = require('react'),
+    ReactDOM = require('react-dom/server'),
+    Component = require('./react-render.js');
+
     // redis = require('redis');
     // https://www.npmjs.com/package/request
 
@@ -16,8 +20,14 @@ var app = express();
 
 app.use("/", express.static(__dirname + "./app/dist/"));
 
-app.get('/', routes.index);
+// app.get('/', routes.index);
 
+var ComponentFactory = React.createFactory(Component);
+app.get('/react', function(req, res, next) {
+  var markup = ReactDOM.renderToString(ComponentFactory());
+  console.log(markup);
+  res.send(markup);
+});
 // GET recession data from Yahoo Finance API
 // https://gist.github.com/fincluster/6145995
 request
