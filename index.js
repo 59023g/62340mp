@@ -1,3 +1,5 @@
+require('babel-core/register');
+
 var express = require('express'),
     http = require('http'),
     request = require('request'),
