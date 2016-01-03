@@ -12,7 +12,7 @@ var Component = React.createClass({
                 </head>
                 <body>
                     <Box text='testing'/>
-                    <script src="dist/vendor.min.js"></script>
+                    <script src="vendor.min.js"></script>
                 </body>
             </html>
         );
