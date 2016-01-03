@@ -26,7 +26,7 @@ gulp.src       = function() {
 
 // note - dist should be build artifact
 gulp.task('clean', function() {
-  return del('./app/dist/**/**')
+  return del('./app/dist/**/**');
 });
 
 // todo - split vendor and app dependencies into separate bundles
