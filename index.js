@@ -20,18 +20,6 @@ app.use("/", express.static(__dirname + "/app/dist/" ));
 app.get('/react-proto', routes.index);
 
 
-// GET recession data from Yahoo Finance API
-// https://gist.github.com/fincluster/6145995
-// request
-//   .get('http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22YHOO%22,%22AAPL%22)&format=json&env=http://datatables.org/alltables.env')
-//   .on('error', function(err) {
-//   console.log(err);
-//   })
-//   .on('response', function(response) {
-//     console.log(response.statusCode); // 200
-//   })
-//   .pipe(fs.createWriteStream('data.json'));
-
 http.createServer(app).listen(process.env.PORT || 8080, function() {
   console.log('Listening on port ' + (process.env.PORT || 8080));
 });
