@@ -11,8 +11,10 @@ var Component = React.createClass({
                     </title>
                 </head>
                 <body>
+                  <div id='app'>
                     <InputForm text='testing'/>
-                    <script src="vendor.min.js"></script>
+                  </div>
+                  <script src="vendor.min.js"></script>
                 </body>
             </html>
         );
