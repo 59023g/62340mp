@@ -1,5 +1,5 @@
 var React = require('react');
-var Box = require('./app/js/box.js'); //this is the box component
+var InputForm = require('./app/js/inputForm.js'); //this is the box component
 
 var Component = React.createClass({
     render: function() {
@@ -11,7 +11,7 @@ var Component = React.createClass({
                     </title>
                 </head>
                 <body>
-                    <Box text='testing'/>
+                    <InputForm text='testing'/>
                     <script src="vendor.min.js"></script>
                 </body>
             </html>
