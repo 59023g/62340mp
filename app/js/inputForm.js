@@ -1,8 +1,9 @@
 var React = require('react');
 var _ = require('lodash');
 
+// todo - create global user {} for state
 
-module.exports = React.createClass({
+var userInput = module.exports = React.createClass({
     getInitialState: function() {
       return {
         stockHoldings: '',
@@ -12,7 +13,7 @@ module.exports = React.createClass({
     handleStockHoldingsChange: function(e) {
       // todo - check out React.PropTypes to check type
       // todo - parseInt if lead
-      console.log(Number( e.target.value )  )
+      console.log(Number( e.target.value )  );
       if ( !Number( e.target.value ) ) {
         this.setState({ isNumber: false, stockHoldings: '' });
         return;
@@ -53,3 +54,5 @@ module.exports = React.createClass({
       );
     }
 });
+
+module.exports = userInput;
