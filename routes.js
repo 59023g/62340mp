@@ -1,12 +1,11 @@
 var React   = require('react'),
-  ReactDOM  = require('react-dom/server'),
-  Component = require('./react-render.js');
+  ReactDOM  = require('react-dom/server');
 
-var ComponentFactory = React.createFactory(Component);
+var App = React.createFactory( require('./app/app.js') );
 
 var routes = {
   index: function(req, res) {
-      var markup = ReactDOM.renderToString(ComponentFactory());
+      var markup = ReactDOM.renderToString(App());
       res.send(markup);
   }
 };
