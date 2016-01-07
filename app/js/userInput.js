@@ -10,9 +10,6 @@ var userInput = module.exports = React.createClass({
       isNumber: false
     };
   },
-  componentDidMount: function() {
-    console.log(this.state);
-  },
   handleStockHoldingsChange: function(e) {
     // todo - check out React.PropTypes to check type
     // todo - parseInt if lead
@@ -40,6 +37,9 @@ var userInput = module.exports = React.createClass({
     this.setState({
       stockHoldings: stockHoldings
     });
+  },
+  componentDidMount: function() {
+    console.log(this.state);
   },
   // not JSX: React.createElement('a', {href: 'https://facebook.github.io/react/'}, 'Hello!')
   // var child1 = React.createElement('li', null, 'First Text Content');
