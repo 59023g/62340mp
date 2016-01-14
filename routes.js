@@ -1,6 +1,7 @@
 var React   = require('react'),
   ReactDOM  = require('react-dom/server');
 
+
 var App = React.createFactory( require('./app/app.js') );
 
 var routes = {

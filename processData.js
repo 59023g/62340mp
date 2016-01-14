@@ -32,8 +32,6 @@ var data = {
 
       // https://github.com/Olical/react-faux-dom
       // http://oli.me.uk/2015/09/09/d3-within-react-the-right-way/
-      /*this.processData(require('./' + 'djia_start_date=2007-01-14&end_date=2015-11-01.json'));*/
-
     });
   }
 

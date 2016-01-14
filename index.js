@@ -23,9 +23,6 @@ app.use('/', express.static(__dirname + '/app/dist/' ));
 app.get('*', routes.index);
 
 
-
-
-
 http.createServer(app).listen(process.env.PORT || 8080, function() {
   console.log('Listening on port ' + (process.env.PORT || 8080));
 });
