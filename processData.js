@@ -13,7 +13,7 @@ var startDate = '2007-01-14',
 var data = {
   processData: function(dataFile) {
     // todo - async/pipe/q issue here when GET, but not if existing
-   return JSON.parse(fs.readFileSync(dataFile, 'utf8'))
+   return JSON.parse(fs.readFileSync(dataFile, 'utf8'));
   },
   get: function() {
     var deferred = q.defer();
@@ -26,16 +26,14 @@ var data = {
             uri: url
           })
           .on('error', function(err) {
-            deferred.reject(err)
+            deferred.reject(err);
           })
           .on('response', function(response) {
-            console.log('response')
-            response.pipe(fs.createWriteStream(djiaStore))
+            response.pipe(fs.createWriteStream(djiaStore));
           })
           .on('end', function(response) {
-            console.log('end')
-            deferred.resolve(djiaStore)
-          })
+            deferred.resolve(djiaStore);
+          });
       }
 
       // https://github.com/Olical/react-faux-dom
