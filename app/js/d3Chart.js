@@ -1,7 +1,12 @@
 var d3 = require('d3'),
     fs = require('fs'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    rawData = require('../../processData.js'),
+    ReactFauxDom = require('react-faux-dom');
 
+console.log(rawData.get().then(function(res) {
+  rawData.processData(res);
+}));
 
 var d3Chart = {
   create: function( el, props, state ) {
