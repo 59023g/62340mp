@@ -1,7 +1,8 @@
 var _         = require('lodash'),
   request     = require('request'),
   fs          = require('fs'),
-  q           = require('q');
+  q           = require('q'),
+  d3          = require('d3');
 
 var startDate = '2007-01-14',
   endDate     = '2015-11-01',
@@ -11,8 +12,8 @@ var startDate = '2007-01-14',
 
 var data = {
   processData: function(dataFile) {
-    // todo - async issue here when GET, but not if existing
-    console.log(JSON.parse(fs.readFileSync(dataFile, 'utf8')))
+    // todo - async/pipe/q issue here when GET, but not if existing
+   return JSON.parse(fs.readFileSync(dataFile, 'utf8'))
   },
   get: function() {
     var deferred = q.defer();
@@ -45,8 +46,6 @@ var data = {
   }
 };
 
-data.get().then(function(res) {
-  data.processData(res);
-});
+
 
 module.exports = data;
