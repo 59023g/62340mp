@@ -1,6 +1,7 @@
 var _       = require('lodash'),
     request = require('request'),
-    fs      = require('fs');
+    fs      = require('fs'),
+    q       = require('q');
 
 var startDate = '2007-01-14',
     endDate = '2015-11-01',
@@ -11,21 +12,21 @@ var startDate = '2007-01-14',
 var data = {
   processData: function(rawData) {
     console.log('hi')
-    var tmp = rawData.dataset.data;
+    // var tmp = rawData.dataset.data;
   },
   get: function() {
+    var deferred = q.defer();
     fs.stat(djiaStore, function(err, stat) {
       if (err === null) {
-        console.log('exists: ' + djiaStore);
-              console.log(processData());
+        deferred.resolve('exists: ' + djiaStore)
       } else {
         request
           .get(url)
           .on('error', function(err) {
-            console.log(err)
+            deferred.reject(new Error(err))
           })
           .on('response', function(response) {
-            console.log(response.statusCode); // 200
+            deferred.resolve(response.statusCode);
           })
           .pipe(fs.createWriteStream(djiaStore));
       }
@@ -33,12 +34,14 @@ var data = {
       // https://github.com/Olical/react-faux-dom
       // http://oli.me.uk/2015/09/09/d3-within-react-the-right-way/
     });
+    return deferred.promise;
+
   }
 
 
 
 };
 
-data.get();
+data.get().then(data.processData());
 
 module.exports = data;
