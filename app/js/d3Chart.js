@@ -13,9 +13,7 @@ var d3Chart = {
       if (err) { return console.warn(err); }
       data = json;
     });
-
   }
-
 };
 
 
