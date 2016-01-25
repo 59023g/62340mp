@@ -29,10 +29,10 @@ var d3Chart = {
 };
 
 
-d3Chart.get("/data").then(function(result) {
-  d3Chart.data = result.dataset;
-  console.log(d3Chart.data);
-});
+d3Chart.get("/data")
+  .then(function(data) {
+    d3Chart.data = data.dataset;
+  });
 
 
 module.exports = d3Chart;
