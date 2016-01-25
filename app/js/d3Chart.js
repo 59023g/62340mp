@@ -75,13 +75,12 @@ d3Chart.get("/data")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     d3Chart.data.forEach(function(d) {
-      d.date = formatDate(parseDate(d[0]));
+      d.date = parseDate(d[0]);
       d.close = +d[4];
-      console.log(d.date, d.close);
      });
 
     x.domain(d3.extent(d3Chart.data, function(d) {
-      return parseDate(d[0]);
+      return d.date;
     }));
     y.domain([0, d3.max(d3Chart.data, function(d) { return d.close; })]);
 
