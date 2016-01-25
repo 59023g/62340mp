@@ -6,37 +6,34 @@ var d3 = require('d3'),
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
 
+// var data = {};
 var d3Chart = {
   data: {},
   get: function(url) {
 
-    function d3Promise(context) {
-      return function() {
-        return new Promise(function( resolve, reject ) {
-          var callback = function( err, data) {
-            if ( err ) {
-              reject(new Error( err ));
-              return;
-            }
-            context.data = data;
-            resolve( context.data );
-          };
-        });
+
+      var assign = function(context) {
+        var cb = function(err, data) {
+          var args = Array.prototype.slice.call(arguments);
+          console.log(args);
+          if (err) {
+            return console.warn(err);
+          }
+          context.data = data.dataset;
+        };
+        return cb;
       };
-    }
 
 
-
-    d3.json( url, d3Promise(this)  );
+      d3.json(url, assign(this));
 
 
   }
-
 };
 
 
 d3Chart.get("/data");
-
+// .then(function(result) {console.log(result); })
 
 
 module.exports = d3Chart;
