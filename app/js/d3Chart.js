@@ -23,15 +23,9 @@ var d3Chart = {
         })
         .get();
     });
-
-
-  }
-};
-
-
-d3Chart.get("/data")
-  .then(function(data) {
-    d3Chart.data = data.dataset.data;
+  },
+  drawLineChart: function(data) {
+    data = data.dataset.data;
 
     var margin = {
         top: 20,
@@ -39,8 +33,8 @@ d3Chart.get("/data")
         bottom: 30,
         left: 50
       },
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = parseInt(d3.select('#chart').style('width'), 10),
+      height = 1060 ;
 
     var formatDate = d3.time.format("%Y-%m-%d");
     var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -64,49 +58,46 @@ d3Chart.get("/data")
         return x(d.date);
       })
       .y(function(d) {
-        // console.log(d[4])
         return y(d.close);
       });
 
-    var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select("div#chart")
+      .append("div")
+      .classed("svg-container", true)
+      .append("svg")
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox","0 0 " + width + " " + height)
+      //class to make it responsive
+      .classed("svg-content-responsive", true)
+      .append("g");
 
-    d3Chart.data.forEach(function(d) {
+    data.forEach(function(d) {
       d.date = parseDate(d[0]);
       d.close = +d[4];
      });
 
-    x.domain(d3.extent(d3Chart.data, function(d) {
+    x.domain(d3.extent(data, function(d) {
       return d.date;
     }));
-    y.domain([0, d3.max(d3Chart.data, function(d) { return d.close; })]);
-
-    // y.domain(d3.extent(d3Chart.data, function(d) {
-    //   return d[4];
-    // }));
+    y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
     svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("dx", ".71em")
       .call(xAxis);
 
-    svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Price ($)");
-
     svg.append("path")
-      .datum(d3Chart.data)
+      .datum(data)
       .attr("class", "line")
       .attr("d", line);
+  },
+
+};
+
+// todo - separate draw axis, etc from the line(s)
+d3Chart.get("/data")
+  .then(function(data) {
+    d3Chart.drawLineChart(data);
   });
 
 
