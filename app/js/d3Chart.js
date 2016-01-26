@@ -25,16 +25,9 @@ var d3Chart = {
     });
   },
   drawLineChart: function(data) {
-    data = data.dataset.data;
 
-    var margin = {
-        top: 20,
-        right: 20,
-        bottom: 30,
-        left: 50
-      },
-      width = parseInt(d3.select('#chart').style('width'), 10),
-      height = 1060 ;
+    var width = parseInt(d3.select('#chart').style('width'), 10),
+      height = 1060;
 
     var formatDate = d3.time.format("%Y-%m-%d");
     var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -66,21 +59,25 @@ var d3Chart = {
       .classed("svg-container", true)
       .append("svg")
       .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox","0 0 " + width + " " + height)
-      //class to make it responsive
+      .attr("viewBox", "0 0 " + width + " " + height)
       .classed("svg-content-responsive", true)
       .append("g");
+
+    data = data.dataset.data;
 
     data.forEach(function(d) {
       d.date = parseDate(d[0]);
       d.close = +d[4];
-     });
+    });
 
     x.domain(d3.extent(data, function(d) {
       return d.date;
     }));
-    y.domain([0, d3.max(data, function(d) { return d.close; })]);
+    y.domain([0, d3.max(data, function(d) {
+      return d.close;
+    })]);
 
+    // todo - numbers not responsive size
     svg.append("g")
       .attr("class", "x axis")
       .attr("dx", ".71em")
@@ -96,9 +93,7 @@ var d3Chart = {
 
 // todo - separate draw axis, etc from the line(s)
 d3Chart.get("/data")
-  .then(function(data) {
-    d3Chart.drawLineChart(data);
-  });
+  .then(d3Chart.drawLineChart);
 
 
 module.exports = d3Chart;
