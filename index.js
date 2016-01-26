@@ -13,7 +13,7 @@ app.locals.pretty = true;
 
 app.use('/', express.static(__dirname + '/app/dist/' ));
 app.use('/', express.static(__dirname + '/app/less/' ));
-app.use('/data', express.static('djia_start_date=2007-01-14&end_date=2015-11-01.json' ));
+app.use('/data', express.static('djia_start_date=2005-01-14&end_date=2015-11-01.json' ));
 
 app.get('*', routes.index);
 

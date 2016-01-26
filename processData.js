@@ -4,7 +4,7 @@ var _         = require('lodash'),
   q           = require('q'),
   d3          = require('d3');
 
-var startDate = '2007-01-14',
+var startDate = '2005-01-14',
   endDate     = '2015-11-01',
   url         = 'https://www.quandl.com/api/v3/datasets/YAHOO/INDEX_DJI.json?collapse=monthly&start_date=' + startDate + '&end_date=' + endDate,
   djiaStore   = 'djia_start_date=' + startDate + '&end_date=' + endDate + '.json';
@@ -45,5 +45,6 @@ var data = {
 };
 
 
+// data.get();
 
 module.exports = data;
