@@ -14,3 +14,7 @@ body {
   stroke: steelblue;
   stroke-width: 1.5px;
 }
+
+.svg-container {
+  min-width: 1280px;
+}
