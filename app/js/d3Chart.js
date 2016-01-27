@@ -55,6 +55,13 @@ var d3Chart = {
         return y(d.close);
       });
 
+    var userLine = d3.svg.line()
+      .x(function(d, i) {
+        return x(d.date);
+      })
+      .y(function(d) {
+        return y(d.user);
+      });
     var svg = d3.select("div#chart")
       .append("div")
       .classed("svg-container", true)
@@ -65,6 +72,9 @@ var d3Chart = {
       .append("g");
 
     data = data.dataset.data;
+    data.reverse();
+
+    var userDataInit = 10000;
 
     data.forEach(function(d, i, a) {
       d.date = parseDate(d[0]);
@@ -73,12 +83,11 @@ var d3Chart = {
       if (!prev) {
         console.log('undefined, first value');
         d.delta = 0;
+        d.user = userDataInit;
       } else {
-        d.delta = (d[4] - prev[4])/prev[4];
-        console.log(d.delta);
+        d.delta = (d[4] - prev[4]) / prev[4];
+        d.user = +(prev.user + (prev.user * d.delta));
       }
-
-      console.log(d)
 
       //d.slope = d[4] - a[i-1];
       //console.log(d.slope)
@@ -101,6 +110,11 @@ var d3Chart = {
       .datum(data)
       .attr("class", "line")
       .attr("d", line);
+
+    svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("d", userLine);
   }
 
 };
