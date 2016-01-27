@@ -6,9 +6,10 @@ var d3 = require('d3'),
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
 
-// var data = {};
 var d3Chart = {
-  data: {},
+  userData: {
+
+  },
   get: function(url) {
     return new Promise(function(resolve, reject) {
       d3.json(url)
@@ -65,9 +66,22 @@ var d3Chart = {
 
     data = data.dataset.data;
 
-    data.forEach(function(d) {
+    data.forEach(function(d, i, a) {
       d.date = parseDate(d[0]);
       d.close = +d[4];
+      var prev = a[i - 1];
+      if (!prev) {
+        console.log('undefined, first value');
+        d.delta = 0;
+      } else {
+        d.delta = (d[4] - prev[4])/prev[4];
+        console.log(d.delta);
+      }
+
+      console.log(d)
+
+      //d.slope = d[4] - a[i-1];
+      //console.log(d.slope)
     });
 
     x.domain(d3.extent(data, function(d) {
@@ -87,7 +101,7 @@ var d3Chart = {
       .datum(data)
       .attr("class", "line")
       .attr("d", line);
-  },
+  }
 
 };
 
