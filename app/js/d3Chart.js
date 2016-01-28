@@ -5,7 +5,6 @@ var d3 = require('d3'),
 // todo - pre-render chart on server :/
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
-
 var d3Chart = {
   userData: {
 
@@ -71,26 +70,21 @@ var d3Chart = {
       .classed("svg-content-responsive", true)
       .append("g");
 
+    var userDataInit = 10000;
     data = data.dataset.data;
     data.reverse();
-
-    var userDataInit = 10000;
 
     data.forEach(function(d, i, a) {
       d.date = parseDate(d[0]);
       d.close = +d[4];
       var prev = a[i - 1];
       if (!prev) {
-        console.log('undefined, first value');
         d.delta = 0;
         d.user = userDataInit;
       } else {
         d.delta = (d[4] - prev[4]) / prev[4];
         d.user = +(prev.user + (prev.user * d.delta));
       }
-
-      //d.slope = d[4] - a[i-1];
-      //console.log(d.slope)
     });
 
     x.domain(d3.extent(data, function(d) {
@@ -113,7 +107,7 @@ var d3Chart = {
 
     svg.append("path")
       .datum(data)
-      .attr("class", "line")
+      .attr("class", "user-line")
       .attr("d", userLine);
   }
 
@@ -122,6 +116,7 @@ var d3Chart = {
 // todo - separate draw axis, etc from the line(s)
 d3Chart.get("/data")
   .then(d3Chart.drawLineChart);
+
 
 
 module.exports = d3Chart;
