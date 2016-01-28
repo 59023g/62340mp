@@ -40,7 +40,6 @@ var data = {
       // http://oli.me.uk/2015/09/09/d3-within-react-the-right-way/
     });
     return deferred.promise;
-
   }
 };
 
