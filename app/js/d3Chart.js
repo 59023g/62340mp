@@ -6,9 +6,8 @@ var d3 = require('d3'),
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
 var d3Chart = {
-  userData: {
-
-  },
+  userDataInit: 10000,
+  userData: [],
   get: function(url) {
     return new Promise(function(resolve, reject) {
       d3.json(url)
@@ -29,9 +28,6 @@ var d3Chart = {
   width: parseInt(d3.select('#chart').style('width'), 10),
   height: 1060,
   drawLineChart: function(data) {
-
-    console.log(d3Chart.formatDate)
-    console.log(d3Chart.height)
 
     var x = d3.time.scale()
       .range([0, d3Chart.width]);
@@ -57,11 +53,12 @@ var d3Chart = {
 
     var userLine = d3.svg.line()
       .x(function(d, i) {
-        return x(d.date);
+        return x(d[0]);
       })
       .y(function(d) {
-        return y(d.user);
+        return y(d[2]);
       });
+
     var svg = d3.select("div#chart")
       .append("div")
       .classed("svg-container", true)
@@ -71,20 +68,23 @@ var d3Chart = {
       .classed("svg-content-responsive", true)
       .append("g");
 
-    var userDataInit = 10000;
     data = data.dataset.data;
     data.reverse();
 
     data.forEach(function(d, i, a) {
+
       d.date = d3Chart.parseDate(d[0]);
       d.close = +d[4];
       var prev = a[i - 1];
+
       if (!prev) {
         d.delta = 0;
-        d.user = userDataInit;
+        d.userClose = d3Chart.userDataInit;
+        d3Chart.userData.push([d.date, d.delta, d.userClose]);
       } else {
         d.delta = (d[4] - prev[4]) / prev[4];
-        d.user = +(prev.user + (prev.user * d.delta));
+        d.userClose = +(prev.userClose + (prev.userClose * d.delta));
+        d3Chart.userData.push([d.date, d.delta, d.userClose]);
       }
     });
 
@@ -107,7 +107,7 @@ var d3Chart = {
       .attr("d", line);
 
     svg.append("path")
-      .datum(data)
+      .datum(d3Chart.userData)
       .attr("class", "user-line")
       .attr("d", userLine);
   }
