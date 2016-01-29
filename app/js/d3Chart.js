@@ -30,6 +30,9 @@ var d3Chart = {
   height: 1060,
   drawLineChart: function(data) {
 
+    console.log(d3Chart.formatDate)
+    console.log(d3Chart.height)
+
     var x = d3.time.scale()
       .range([0, d3Chart.width]);
 
