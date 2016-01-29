@@ -24,13 +24,11 @@ var d3Chart = {
         .get();
     });
   },
+  formatDate: d3.time.format("%Y-%m-%d"),
+  parseDate: d3.time.format("%Y-%m-%d").parse,
+  width: parseInt(d3.select('#chart').style('width'), 10),
+  height: 1060,
   drawLineChart: function(data) {
-
-    var width = parseInt(d3.select('#chart').style('width'), 10),
-      height = 1060;
-
-    var formatDate = d3.time.format("%Y-%m-%d");
-    var parseDate = d3.time.format("%Y-%m-%d").parse;
 
     var x = d3.time.scale()
       .range([0, width]);
