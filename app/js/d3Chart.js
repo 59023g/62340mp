@@ -31,10 +31,10 @@ var d3Chart = {
   drawLineChart: function(data) {
 
     var x = d3.time.scale()
-      .range([0, width]);
+      .range([0, d3Chart.width]);
 
     var y = d3.scale.linear()
-      .range([height, 0]);
+      .range([d3Chart.height, 0]);
 
     var xAxis = d3.svg.axis()
       .scale(x)
@@ -64,7 +64,7 @@ var d3Chart = {
       .classed("svg-container", true)
       .append("svg")
       .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", "0 0 " + width + " " + height)
+      .attr("viewBox", "0 0 " + d3Chart.width + " " + d3Chart.height)
       .classed("svg-content-responsive", true)
       .append("g");
 
@@ -73,7 +73,7 @@ var d3Chart = {
     data.reverse();
 
     data.forEach(function(d, i, a) {
-      d.date = parseDate(d[0]);
+      d.date = d3Chart.parseDate(d[0]);
       d.close = +d[4];
       var prev = a[i - 1];
       if (!prev) {
