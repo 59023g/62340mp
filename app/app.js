@@ -1,7 +1,7 @@
-var React = require('react');
+var React     = require('react');
 var UserInput = require('./js/userInput.js'); //this is the box component
 
-var App = (function() {
+var App = module.exports = (function() {
 
   var _public = {
     mainView: React.createClass({
@@ -31,5 +31,3 @@ var App = (function() {
 
   return _public;
 })();
-
-module.exports = App;

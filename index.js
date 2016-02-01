@@ -1,14 +1,15 @@
 require('babel-core/register');
 
-var express     = require('express'),
-    http        = require('http'),
-    request     = require('request'),
-    fs          = require('fs'),
-    routes      = require('./routes'),
-    d3          = require('d3');
-    data        = require('./processData');
+var express = require('express'),
+    http    = require('http'),
+    request = require('request'),
+    fs      = require('fs'),
+    routes  = require('./routes'),
+    d3      = require('d3');
+    data    = require('./processData');
 
-var app = express();
+var app     = express();
+
 app.locals.pretty = true;
 
 app.use('/', express.static(__dirname + '/app/dist/' ));

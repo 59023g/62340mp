@@ -4,7 +4,7 @@ var d3 = require('d3');
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
 
-var d3Chart = (function() {
+var d3Chart = module.exports = (function() {
 
   var _private = {
     formatDate: d3.time.format("%Y-%m-%d"),
@@ -125,7 +125,3 @@ var d3Chart = (function() {
 // todo - separate draw axis, etc from the line(s)
 d3Chart.get("/data")
   .then(d3Chart.drawLineChart);
-
-
-
-module.exports = d3Chart;
