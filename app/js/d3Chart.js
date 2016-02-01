@@ -11,10 +11,10 @@ var d3Chart = module.exports = (function() {
     parseDate: d3.time.format("%Y-%m-%d").parse,
     width: parseInt(d3.select('#chart').style('width'), 10),
     height: 1060,
-    userData: []
   };
 
   var _public = {
+    userData: [],
     userDataInit: 10000,
     get: function(url) {
       return new Promise(function(resolve, reject) {
@@ -83,13 +83,16 @@ var d3Chart = module.exports = (function() {
         if (!prev) {
           d.delta = 0;
           d.userClose = _public.userDataInit;
-          _private.userData.push([d.date, d.delta, d.userClose]);
+          console.log([d.date, d.delta, d.userClose])
+          _public.userData.push([d.date, d.delta, d.userClose]);
         } else {
           d.delta = (d[4] - prev[4]) / prev[4];
           d.userClose = +(prev.userClose + (prev.userClose * d.delta));
-          _private.userData.push([d.date, d.delta, d.userClose]);
+          _public.userData.push([d.date, d.delta, d.userClose]);
         }
       });
+      console.log(_public.userDataInit)
+      console.log(_public.userData)
 
       x.domain(d3.extent(data, function(d) {
         return d.date;
@@ -109,8 +112,11 @@ var d3Chart = module.exports = (function() {
         .attr("class", "line")
         .attr("d", line);
 
+
+    },
+    drawNewLine: function() {
       svg.append("path")
-        .datum(_private.userData)
+        .datum(_public.userData)
         .attr("class", "user-line")
         .attr("d", userLine);
     }
