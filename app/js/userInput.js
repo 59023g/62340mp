@@ -1,6 +1,5 @@
-var React = require('react');
-var _ = require('lodash');
-
+var React = require('react'),
+    d3Chart = {};
 // todo - create global user {} for state
 
 var userInput = module.exports = React.createClass({
@@ -13,7 +12,6 @@ var userInput = module.exports = React.createClass({
   handleStockHoldingsChange: function(e) {
     // todo - check out React.PropTypes to check type
     // todo - parseInt if lead
-    console.log(Number(e.target.value));
     if (!Number(e.target.value)) {
       this.setState({
         isNumber: false,
@@ -29,17 +27,23 @@ var userInput = module.exports = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    var stockHoldings = this.state.stockHoldings.trim();
+    var stockHoldings = parseInt(this.state.stockHoldings.trim());
     if (!stockHoldings) {
       return;
+    } else if ( d3Chart ) {
+      d3Chart.userDataInit = stockHoldings;
+      d3Chart.userData = [];
+      d3Chart.drawUserLine();
     }
-    // this.props.onCommentSubmit({ stockHoldings: stockHoldings });
     this.setState({
       stockHoldings: stockHoldings
     });
+
+    // todo - post for server state sync
   },
   componentDidMount: function() {
-    console.log(this.state);
+    d3Chart = require('./d3Chart.js');
+    console.log(d3Chart)
   },
   // not JSX: React.createElement('a', {href: 'https://facebook.github.io/react/'}, 'Hello!')
   // var child1 = React.createElement('li', null, 'First Text Content');
