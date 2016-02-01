@@ -14,8 +14,11 @@ var d3Chart = module.exports = (function() {
   };
 
   var _public = {
+    data: [],
     userData: [],
     userDataInit: 10000,
+    xTimeScale:  d3.time.scale().range([0, _private.width]),
+    yTimeScale:  d3.scale.linear().range([_private.height, 0]),
     get: function(url) {
       return new Promise(function(resolve, reject) {
         d3.json(url)
@@ -31,35 +34,33 @@ var d3Chart = module.exports = (function() {
           .get();
       });
     },
-    drawLineChart: function(data) {
-      var x = d3.time.scale()
-        .range([0, _private.width]);
+    drawLineChart: function(rawData) {
 
-      var y = d3.scale.linear()
-        .range([_private.height, 0]);
+      rawData = rawData.dataset.data.reverse();
+
+      _public.data = rawData.map(function(d) {
+        var pItem = [];
+        pItem.date = _private.parseDate(d[0]);
+        pItem.close = +d[4];
+        return pItem;
+      });
+
+      var data = _public.data;
 
       var xAxis = d3.svg.axis()
-        .scale(x)
+        .scale(_public.xTimeScale)
         .orient("bottom");
 
       var yAxis = d3.svg.axis()
-        .scale(y)
+        .scale(_public.yTimeScale)
         .orient("left");
 
       var line = d3.svg.line()
         .x(function(d, i) {
-          return x(d.date);
+          return _public.xTimeScale(d.date);
         })
         .y(function(d) {
-          return y(d.close);
-        });
-
-      var userLine = d3.svg.line()
-        .x(function(d, i) {
-          return x(d[0]);
-        })
-        .y(function(d) {
-          return y(d[2]);
+          return _public.yTimeScale(d.close);
         });
 
       var svg = d3.select("div#chart")
@@ -71,33 +72,10 @@ var d3Chart = module.exports = (function() {
         .classed("svg-content-responsive", true)
         .append("g");
 
-      data = data.dataset.data;
-      data.reverse();
-
-      data.forEach(function(d, i, a) {
-
-        d.date = _private.parseDate(d[0]);
-        d.close = +d[4];
-        var prev = a[i - 1];
-
-        if (!prev) {
-          d.delta = 0;
-          d.userClose = _public.userDataInit;
-          console.log([d.date, d.delta, d.userClose])
-          _public.userData.push([d.date, d.delta, d.userClose]);
-        } else {
-          d.delta = (d[4] - prev[4]) / prev[4];
-          d.userClose = +(prev.userClose + (prev.userClose * d.delta));
-          _public.userData.push([d.date, d.delta, d.userClose]);
-        }
-      });
-      console.log(_public.userDataInit)
-      console.log(_public.userData)
-
-      x.domain(d3.extent(data, function(d) {
+      _public.xTimeScale.domain(d3.extent(data, function(d) {
         return d.date;
       }));
-      y.domain([0, d3.max(data, function(d) {
+      _public.yTimeScale.domain([0, d3.max(data, function(d) {
         return d.close;
       })]);
 
@@ -112,10 +90,39 @@ var d3Chart = module.exports = (function() {
         .attr("class", "line")
         .attr("d", line);
 
-
     },
-    drawNewLine: function() {
-      svg.append("path")
+    drawUserLine: function() {
+      if (!_public.data) {
+        console.warn('rawData not processed');
+      } else {
+
+        _public.data.forEach(function(d, i, a) {
+          var prev = a[i - 1];
+
+          if (!prev) {
+            d.delta = 0;
+            d.userClose = _public.userDataInit;
+            // console.log([d.date, d.delta, d.userClose]);
+            _public.userData.push([d.date, d.delta, d.userClose]);
+          } else {
+            d.delta = (d.close - prev.close) / prev.close;
+            d.userClose = +(prev.userClose + (prev.userClose * d.delta));
+            _public.userData.push([d.date, d.delta, d.userClose]);
+          }
+
+        });
+      }
+
+      var userLine = d3.svg.line()
+        .x(function(d, i) {
+          return _public.xTimeScale(d.date);
+        })
+        .y(function(d) {
+          return _public.yTimeScale(d[2]);
+        });
+
+      var svg = d3.select("svg")
+        .append("path")
         .datum(_public.userData)
         .attr("class", "user-line")
         .attr("d", userLine);
