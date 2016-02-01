@@ -5,7 +5,7 @@ var React  = require('react'),
 var routes = module.exports = (function() {
   var _public = {
     index: function(req, res) {
-      var markup = ReactDOM.renderToString(App());
+      var markup = ReactDOM.renderToStaticMarkup(App());
       res.send(markup);
     }
   };
