@@ -10,7 +10,7 @@ var d3Chart = module.exports = (function() {
     formatDate: d3.time.format("%Y-%m-%d"),
     parseDate: d3.time.format("%Y-%m-%d").parse,
     width: parseInt(d3.select('#chart').style('width'), 10),
-    height: 1060,
+    height: 800,
   };
 
   var _public = {
@@ -115,11 +115,12 @@ var d3Chart = module.exports = (function() {
 
       var userLine = d3.svg.line()
         .x(function(d, i) {
-          return _public.xTimeScale(d.date);
+          return _public.xTimeScale(d[0]);
         })
         .y(function(d) {
           return _public.yTimeScale(d[2]);
         });
+
 
       var svg = d3.select("svg")
         .append("path")
