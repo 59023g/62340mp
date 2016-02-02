@@ -21,7 +21,8 @@ var App = module.exports = (function() {
 
                     </div>
                     <div id='chart'></div>
-                    <script src="vendor.min.js"></script>
+                    <script src="libs.js"></script>
+                    <script src="app.min.js"></script>
                   </body>
               </html>
           );
