@@ -64,7 +64,8 @@ gulp.task('js:app', function() {
   var props = {
     entries: './app/index.js',
     cache: {},
-    packageCache: {}
+    packageCache: {},
+    verbose: true
   };
 
   var bundler =  watchify(browserify(props));
