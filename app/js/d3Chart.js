@@ -5,13 +5,13 @@ var d3 = require('d3');
 // ReactFauxDom = require('react-faux-dom');
 
 
-var d3Chart = module.exports = (function() {
+var d3Chart = module.exports = (function () {
 
   var _private = {
     formatDate: d3.time.format("%Y-%m-%d"),
     parseDate: d3.time.format("%Y-%m-%d").parse,
     width: parseInt(d3.select('#chart').style('width'), 10),
-    height: 500,
+    height: window.innerHeight,
   };
 
   var _public = {
@@ -20,28 +20,29 @@ var d3Chart = module.exports = (function() {
     userDataInit: 1000,
     xTimeScale: d3.time.scale().range([0, _private.width]),
     yTimeScale: d3.scale.linear().range([_private.height, 0]),
-    get: function(url) {
-      return new Promise(function(resolve, reject) {
+    get: function (url) {
+      return new Promise(function (resolve, reject) {
         d3.json(url)
-          .on("progress", function() {
+          .on("progress", function () {
             console.log("progress", d3.event.loaded);
           })
-          .on("load", function(json) {
+          .on("load", function (json) {
             resolve(json);
           })
-          .on("error", function(error) {
+          .on("error", function (error) {
             reject(error);
           })
           .get();
       });
     },
-    drawLineChart: function(rawData) {
+    drawLineChart: function (rawData) {
 
-      var margin = {top: 0, right: 20, bottom: 20, left: 50};
+      console.log(_private.width)
+      var margin = { top: 10, right: 50, bottom: 20, left: 40  };
 
       rawData = rawData.dataset.data.reverse();
 
-      _public.data = rawData.map(function(d) {
+      _public.data = rawData.map(function (d) {
         var pItem = [];
         pItem.date = _private.parseDate(d[0]);
         pItem.close = +d[4];
@@ -51,40 +52,36 @@ var d3Chart = module.exports = (function() {
       var data = _public.data;
 
       var xAxis = d3.svg.axis()
-        .scale(_public.xTimeScale)
-        .orient("bottom");
+      .scale(_public.xTimeScale)
+      .orient("bottom");
 
       var yAxis = d3.svg.axis()
         .scale(_public.yTimeScale)
         .orient("left");
 
       var line = d3.svg.line()
-        .x(function(d) {
-          return _public.xTimeScale(d.date);
-        })
-        .y(function(d) {
-          return _public.yTimeScale(d.close);
-        });
+        .x(function (d) { return _public.xTimeScale(d.date); })
+        .y(function (d) { return _public.yTimeScale(d.close); });
 
+        // var newHe =
       var svg = d3.select("div#chart")
         .append("div")
         .classed("svg-container", true)
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + _private.width + " " + _private.height)
+        .attr("viewBox", "0 0 " + parseInt(_private.width-margin.left-margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top) )
         .classed("svg-content-responsive", true)
         .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-      _public.xTimeScale.domain(d3.extent(data, function(d) {
+      _public.xTimeScale.domain(d3.extent(data, function (d) {
         return d.date;
       }));
 
-      _public.yTimeScale.domain([0, d3.max(data, function(d) {
-          return d.close;
-        })
-      ]);
+      _public.yTimeScale.domain([0, d3.max(data, function (d) {
+        return d.close;
+      })]);
 
       // todo - numbers not responsive size
       svg.append("g")
@@ -108,12 +105,12 @@ var d3Chart = module.exports = (function() {
         .attr("d", line);
 
     },
-    drawUserLine: function() {
+    drawUserLine: function () {
       if (!_public.data) {
         console.warn('rawData not processed');
       } else {
 
-        _public.data.forEach(function(d, i, a) {
+        _public.data.forEach(function (d, i, a) {
           var prev = a[i - 1];
 
           if (!prev) {
@@ -132,18 +129,20 @@ var d3Chart = module.exports = (function() {
 
       var y1 = d3.scale.linear().range([800, 0]);
       var yAxisRight = d3.svg.axis().scale(y1)
-          .orient("right").ticks(5);
+        .orient("right").ticks(5);
 
 
       var userLine = d3.svg.line()
-        .x(function(d) { return _public.xTimeScale(d[0]); })
-        .y(function(d) {
-          console.log(d);
+        .x(function (d) {
+          return _public.xTimeScale(d[0]);
+        })
+        .y(function (d) {
           return y1(d[2]);
         });
 
-        y1.domain([0, d3.max(_public.userData, function(d) {
-       		return Math.max(d[2]); })]);
+      y1.domain([0, d3.max(_public.userData, function (d) {
+        return Math.max(d[2]);
+      })]);
 
       var svg = d3.select("svg")
         .append("path")
@@ -151,11 +150,21 @@ var d3Chart = module.exports = (function() {
         .attr("class", "user-line")
         .attr("d", userLine);
 
-        svg.append("g")
-          .attr("class", "y axis")
-          .attr("transform", "translate(100 ,0)")
-          .style("fill", "red")
-          .call(yAxisRight);
+      // svg.append("g")
+      //   .attr("class", "y axis")
+      //   .attr("transform", "translate(100 ,0)")
+      //   .style("fill", "red")
+      //   .call(yAxisRight);
+
+      svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxisRight)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Price ($)");
 
     }
 
