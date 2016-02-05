@@ -166,28 +166,30 @@ var d3Chart = module.exports = (function () {
 
       y1.domain([0,
         d3.max(_public.userData, function (d) {
-        return Math.max(d[2]);
-      })]);
+          return Math.max(d[2]);
+        })
+      ]);
 
-    if( d3.selectAll("g#user-line")[0].length > 0 ) {
-      d3.selectAll("g#user-line").remove();
-    }
+      if (d3.selectAll("g#user-line")[0].length > 0) {
+        d3.selectAll("g#user-line")
+          .remove();
+      }
 
-    function render () {
-      var svg =  d3.select("svg");
-      svg.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      .attr("id", "user-line")
-      .append("g")
-      .attr("class", "y axis")
-      .call(yAxisRight)
-      .append("path")
-      .datum(_public.userData)
-      .attr("class", "user-line")
-      .attr("d", userLine);
-    }
+      function render() {
+        var svg = d3.select("svg");
+        svg.append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+          .attr("id", "user-line")
+          .append("g")
+          .attr("class", "y axis")
+          .call(yAxisRight)
+          .append("path")
+          .datum(_public.userData)
+          .attr("class", "user-line")
+          .attr("d", userLine);
+      }
 
-    render();
+      render();
 
 
     }
