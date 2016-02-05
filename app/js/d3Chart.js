@@ -9,8 +9,10 @@ var d3Chart = module.exports = (function () {
 
   var _private = {
     formatDate: d3.time.format("%Y-%m-%d"),
-    parseDate: d3.time.format("%Y-%m-%d").parse,
-    width: parseInt(d3.select('#chart').style('width'), 10),
+    parseDate: d3.time.format("%Y-%m-%d")
+      .parse,
+    width: parseInt(d3.select('#chart')
+      .style('width'), 10),
     height: window.innerHeight,
   };
 
@@ -18,8 +20,10 @@ var d3Chart = module.exports = (function () {
     data: [],
     userData: [],
     userDataInit: 1000,
-    xTimeScale: d3.time.scale().range([0, _private.width]),
-    yTimeScale: d3.scale.linear().range([_private.height, 0]),
+    xTimeScale: d3.time.scale()
+      .range([0, _private.width]),
+    yTimeScale: d3.scale.linear()
+      .range([_private.height, 0]),
     get: function (url) {
       return new Promise(function (resolve, reject) {
         d3.json(url)
@@ -38,7 +42,12 @@ var d3Chart = module.exports = (function () {
     drawLineChart: function (rawData) {
 
       console.log(_private.width)
-      var margin = { top: 10, right: 50, bottom: 20, left: 40  };
+      var margin = {
+        top: 10,
+        right: 0,
+        bottom: 20,
+        left: 0
+      };
 
       rawData = rawData.dataset.data.reverse();
 
@@ -52,24 +61,29 @@ var d3Chart = module.exports = (function () {
       var data = _public.data;
 
       var xAxis = d3.svg.axis()
-      .scale(_public.xTimeScale)
-      .orient("bottom");
+        .scale(_public.xTimeScale)
+        .orient("bottom");
 
       var yAxis = d3.svg.axis()
         .scale(_public.yTimeScale)
-        .orient("left");
+        .orient("right")
+        .ticks(5);
 
       var line = d3.svg.line()
-        .x(function (d) { return _public.xTimeScale(d.date); })
-        .y(function (d) { return _public.yTimeScale(d.close); });
+        .x(function (d) {
+          return _public.xTimeScale(d.date);
+        })
+        .y(function (d) {
+          return _public.yTimeScale(d.close);
+        });
 
-        // var newHe =
+      // var newHe =
       var svg = d3.select("div#chart")
         .append("div")
         .classed("svg-container", true)
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + parseInt(_private.width-margin.left-margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top) )
+        .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
         .classed("svg-content-responsive", true)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -89,15 +103,15 @@ var d3Chart = module.exports = (function () {
         .attr("dx", ".71em")
         .call(xAxis);
 
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Price ($)");
+      // svg.append("g")
+      //   .attr("class", "y axis")
+      //   .call(yAxis)
+      //   .append("text")
+      //   .attr("transform", "rotate(-90)")
+      //   .attr("y", 6)
+      //   .attr("dy", ".71em")
+      //   .style("text-anchor", "end")
+      //   .text("Price ($)");
 
       svg.append("path")
         .datum(data)
@@ -106,6 +120,14 @@ var d3Chart = module.exports = (function () {
 
     },
     drawUserLine: function () {
+
+      var margin = {
+        top: 10,
+        right: 0,
+        bottom: 20,
+        left: 0
+      };
+
       if (!_public.data) {
         console.warn('rawData not processed');
       } else {
@@ -127,9 +149,11 @@ var d3Chart = module.exports = (function () {
         });
       }
 
-      var y1 = d3.scale.linear().range([800, 0]);
-      var yAxisRight = d3.svg.axis().scale(y1)
-        .orient("right").ticks(5);
+      var y1 = _public.yTimeScale;
+      var yAxisRight = d3.svg.axis()
+        .scale(y1)
+        .orient("right")
+        .ticks(5);
 
 
       var userLine = d3.svg.line()
@@ -140,31 +164,31 @@ var d3Chart = module.exports = (function () {
           return y1(d[2]);
         });
 
-      y1.domain([0, d3.max(_public.userData, function (d) {
+      y1.domain([0,
+        d3.max(_public.userData, function (d) {
         return Math.max(d[2]);
       })]);
 
-      var svg = d3.select("svg")
-        .append("path")
-        .datum(_public.userData)
-        .attr("class", "user-line")
-        .attr("d", userLine);
+    if( d3.selectAll("g#user-line")[0].length > 0 ) {
+      d3.selectAll("g#user-line").remove();
+    }
 
-      // svg.append("g")
-      //   .attr("class", "y axis")
-      //   .attr("transform", "translate(100 ,0)")
-      //   .style("fill", "red")
-      //   .call(yAxisRight);
-
+    function render () {
+      var svg =  d3.select("svg");
       svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxisRight)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Price ($)");
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attr("id", "user-line")
+      .append("g")
+      .attr("class", "y axis")
+      .call(yAxisRight)
+      .append("path")
+      .datum(_public.userData)
+      .attr("class", "user-line")
+      .attr("d", userLine);
+    }
+
+    render();
+
 
     }
 
