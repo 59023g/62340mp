@@ -170,12 +170,15 @@ var d3Chart = module.exports = (function () {
         })
       ]);
 
-      if (d3.selectAll("g#user-line")[0].length > 0) {
-        d3.selectAll("g#user-line")
-          .remove();
-      }
+
 
       function render() {
+        var existingLines = d3.selectAll("g#user-line");
+
+        if (existingLines[0].length > 0) {
+          existingLines.remove();
+        }
+
         var svg = d3.select("svg");
         svg.append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")

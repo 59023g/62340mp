@@ -43,7 +43,7 @@ var userInput = module.exports = React.createClass({
   },
   componentDidMount: function() {
     d3Chart = require('./d3Chart.js');
-    console.log(d3Chart)
+    console.log(d3Chart);
   },
   // not JSX: React.createElement('a', {href: 'https://facebook.github.io/react/'}, 'Hello!')
   // var child1 = React.createElement('li', null, 'First Text Content');
