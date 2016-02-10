@@ -18,7 +18,10 @@ var d3Chart = module.exports = (function () {
 
   var _public = {
     data: [],
-    userData: [],
+    userData: [
+      [],
+      []
+    ],
     userDataInit: 1000,
     xTimeScale: d3.time.scale()
       .range([0, _private.width]),
@@ -40,8 +43,6 @@ var d3Chart = module.exports = (function () {
       });
     },
     drawLineChart: function (rawData) {
-
-      console.log(_private.width)
       var margin = {
         top: 10,
         right: 0,
@@ -103,16 +104,6 @@ var d3Chart = module.exports = (function () {
         .attr("dx", ".71em")
         .call(xAxis);
 
-      // svg.append("g")
-      //   .attr("class", "y axis")
-      //   .call(yAxis)
-      //   .append("text")
-      //   .attr("transform", "rotate(-90)")
-      //   .attr("y", 6)
-      //   .attr("dy", ".71em")
-      //   .style("text-anchor", "end")
-      //   .text("Price ($)");
-
       svg.append("path")
         .datum(data)
         .attr("class", "line")
@@ -127,27 +118,67 @@ var d3Chart = module.exports = (function () {
         bottom: 20,
         left: 0
       };
+      var userHold = [
+        [],
+        []
+      ];
+
+      var sellDate = new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)");
+      var buyDate = new Date("April 2009 00:00:00 GMT-0700 (PDT)");
 
       if (!_public.data) {
         console.warn('rawData not processed');
       } else {
 
-        _public.data.forEach(function (d, i, a) {
-          var prev = a[i - 1];
+        // console.log(userHold);
+        // console.log(_public.data);
 
+        _public.data.forEach(function (d, i, a) {
+
+          var prev = a[i - 1];
           if (!prev) {
             d.delta = 0;
             d.userClose = _public.userDataInit;
-            // console.log([d.date, d.delta, d.userClose]);
-            _public.userData.push([d.date, d.delta, d.userClose]);
+            userHold[0].push([d.date, d.delta, d.userClose]);
           } else {
+
             d.delta = (d.close - prev.close) / prev.close;
             d.userClose = +(prev.userClose + (prev.userClose * d.delta));
-            _public.userData.push([d.date, d.delta, d.userClose]);
+            userHold[0].push([d.date, d.delta, d.userClose]);
           }
 
         });
+
+
+        var calculateUserHold = function (userData) {
+          var holdValue;
+          userHold[1] = userData;
+
+          userHold[1].forEach(function (d, i, a) {
+
+            var prev = a[i - 1];
+            if (d[0] >= sellDate && d[0] <= buyDate) {
+              if (holdValue) {
+                userHold[1][i][2] = holdValue;
+                // console.log(userHold[1][i][2]);
+              } else {
+                // console.log(userHold[1]);
+                holdValue = userHold[1][i][2];
+              }
+
+            } else if ( d[0] >= buyDate ){
+              // console.log(prev[2])
+              d.userClose = +(prev[2] + (prev[2] * d[1]));
+              // console.log(d.userClose)
+              userHold[1][i].splice(2, 1, d.userClose)
+            }
+          });
+        };
+
+        // calculateUserHold(userHold[0]);
       }
+
+
 
       var y1 = _public.yTimeScale;
       var yAxisRight = d3.svg.axis()
@@ -155,7 +186,7 @@ var d3Chart = module.exports = (function () {
         .orient("right")
         .ticks(5);
 
-
+      // var found = _public.userData.indexOf
       var userLine = d3.svg.line()
         .x(function (d) {
           return _public.xTimeScale(d[0]);
@@ -165,12 +196,10 @@ var d3Chart = module.exports = (function () {
         });
 
       y1.domain([0,
-        d3.max(_public.userData, function (d) {
+        d3.max(userHold[0], function (d) {
           return Math.max(d[2]);
         })
       ]);
-
-
 
       function render() {
         var existingLines = d3.selectAll("g#user-line");
@@ -179,6 +208,7 @@ var d3Chart = module.exports = (function () {
           existingLines.remove();
         }
 
+        console.log(userHold)
         var svg = d3.select("svg");
         svg.append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -187,9 +217,10 @@ var d3Chart = module.exports = (function () {
           .attr("class", "y axis")
           .call(yAxisRight)
           .append("path")
-          .datum(_public.userData)
+          .datum(userHold[0])
           .attr("class", "user-line")
           .attr("d", userLine);
+
       }
 
       render();
