@@ -111,6 +111,8 @@ var d3Chart = module.exports = (function () {
     },
     drawUserLine: function () {
 
+      var calculateUserHeld = function () {
+        // console.log(userHold);
 
 
       var sellDate = new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)");
@@ -146,7 +148,8 @@ var d3Chart = module.exports = (function () {
       // var userSold = _public.userData.slice();
       // console.log(userHeld)
 
-      var calculateUserHold = function () {
+
+      var calculateUserSold = function () {
         var holdValue;
 
         _public.userSold = _.slice(_public.userHeld);
@@ -173,10 +176,11 @@ var d3Chart = module.exports = (function () {
         });
       };
 
-      // calculateUserHold();
+      calculateUserSold();
 
 
-      _public.render();
+      _public.render(_public.userHeld);
+      // _public.render(_public.userSold);
 
 
     },
