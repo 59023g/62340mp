@@ -19,6 +19,8 @@ var d3Chart = module.exports = (function () {
 
   var _public = {
     data: [],
+    sellDate: new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)"),
+    buyDate: new Date("April 2009 00:00:00 GMT-0700 (PDT)"),
     userHeld: [],
     userSold: [],
     userDataInit: 1000,
@@ -49,6 +51,16 @@ var d3Chart = module.exports = (function () {
         left: 0
       };
 
+      var svg = d3.select("div#chart")
+        .append("div")
+        .classed("svg-container", true)
+        .append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
+        .classed("svg-content-responsive", true)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
       rawData = rawData.dataset.data.reverse();
 
       _public.data = rawData.map(function (d) {
@@ -69,6 +81,9 @@ var d3Chart = module.exports = (function () {
         .orient("right")
         .ticks(5);
 
+
+
+
       var line = d3.svg.line()
         .x(function (d) {
           return _public.xTimeScale(d.date);
@@ -76,18 +91,6 @@ var d3Chart = module.exports = (function () {
         .y(function (d) {
           return _public.yTimeScale(d.close);
         });
-
-      // var newHe =
-      var svg = d3.select("div#chart")
-        .append("div")
-        .classed("svg-container", true)
-        .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
-        .classed("svg-content-responsive", true)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
       _public.xTimeScale.domain(d3.extent(data, function (d) {
         return d.date;
@@ -114,35 +117,38 @@ var d3Chart = module.exports = (function () {
       var calculateUserHeld = function () {
         // console.log(userHold);
 
+        // _public.userHeld = _.slice(_public.data);
 
-      var sellDate = new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)");
-      var buyDate = new Date("April 2009 00:00:00 GMT-0700 (PDT)");
+        //  console.log(_public.userHeld);
 
-      if (!_public.data) {
-        console.warn('rawData not processed');
-      } else {
-
-        // console.log(userHold);
-        _public.data.forEach(function (d, i, a) {
-
+        _public.userHeld = _public.data.map(function (d, i, a) {
           var prev = a[i - 1];
           if (!prev) {
             d.delta = 0;
             d.userClose = _public.userDataInit;
-            _public.userHeld.push([d.date, d.delta, d.userClose]);
+            return [d.date, d.delta, d.userClose];
+
+            // _public.userHeld[i].slice(0,2, [d.date, d.delta, d.userClose]);
           } else {
 
             d.delta = (d.close - prev.close) / prev.close;
             d.userClose = +(prev.userClose + (prev.userClose * d.delta));
             // console.log(d.userClose)
+            return [d.date, d.delta, d.userClose];
 
-            _public.userHeld.push([d.date, d.delta, d.userClose]);
+            // _public.userHeld[i].slice(0,2, [d.date, d.delta, d.userClose]);
           }
 
         });
 
 
+      };
 
+      if (!_public.data) {
+        console.warn('rawData not processed');
+      } else {
+
+        calculateUserHeld();
 
       }
       // var userSold = _public.userData.slice();
@@ -152,26 +158,33 @@ var d3Chart = module.exports = (function () {
       var calculateUserSold = function () {
         var holdValue;
 
-        _public.userSold = _.slice(_public.userHeld);
+        //_public.userSold = _.slice(_public.userHeld);
 
-        _public.userSold.forEach(function (d, i, a) {
-          // console.log(d, i, a)
+        _public.userSold = _public.userHeld.map(function (d, i, a) {
 
           var prev = a[i - 1];
-          if (d[0] >= sellDate && d[0] <= buyDate) {
+          console.log(prev)
+          console.log(d)
+
+          if (d[0] >= _public.sellDate && d[0] <= _public.buyDate) {
             if (holdValue) {
-              _public.userSold[i][2] = holdValue;
+
+              d[2] = holdValue;
+              // console.log('if', i)
               // console.log(userHold[1][i][2]);
             } else {
               // console.log(userHold[1]);
-              holdValue = _public.userSold[i][2];
+              // console.log('else', i)
+
+              holdValue = d[2];
             }
 
-          } else if (d[0] >= buyDate) {
-            // console.log(prev[2])
-            d.userClose = +(prev[2] + (prev[2] * d[1]));
-            // console.log(d.userClose)
-            _public.userSold[i].splice(2, 1, d.userClose)
+          } else if (d[0] >= _public.buyDate) {
+
+            var userClose = +(prev[2] + (prev[2] * d[1]));
+            return userClose
+              //_public.userSold[i].splice(2, 1, userClose);
+              //  console.log(_public.userSold[i]);
           }
         });
       };
