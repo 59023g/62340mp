@@ -180,7 +180,7 @@ var d3Chart = module.exports = (function () {
 
 
     },
-    render: function () {
+    render: function (data) {
       var margin = {
         top: 10,
         right: 0,
@@ -203,7 +203,7 @@ var d3Chart = module.exports = (function () {
         });
 
       y1.domain([0,
-        d3.max(_public.userHeld, function (d) {
+        d3.max(data, function (d) {
           return Math.max(d[2]);
         })
       ]);
@@ -216,6 +216,7 @@ var d3Chart = module.exports = (function () {
 
       console.log(_public.userSold)
       console.log(_public.userHeld)
+
       var svg = d3.select("svg");
       svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -224,7 +225,7 @@ var d3Chart = module.exports = (function () {
         .attr("class", "y axis")
         .call(yAxisRight)
         .append("path")
-        .datum(_public.userHeld)
+        .data(data)
         .attr("class", "user-line")
         .attr("d", userLine);
 
