@@ -56,10 +56,7 @@ var d3Chart = module.exports = (function () {
     userHeld: [],
     userSold: [],
     userDataInit: 1000,
-    xTimeScale: d3.time.scale()
-      .range([0, _private.width]),
-    yTimeScale: d3.scale.linear()
-      .range([_private.height, 0]),
+
     get: function (url) {
       return new Promise(function (resolve, reject) {
         d3.json(url)
@@ -75,62 +72,141 @@ var d3Chart = module.exports = (function () {
           .get();
       });
     },
-    drawLineChart: function (rawData) {
-      var margin = {
-        top: 10,
-        right: 0,
-        bottom: 20,
-        left: 0
-      };
+    processRaw: function (rawData) {
+      // Data - DJIA -
+      return new Promise(function (resolve, reject) {
 
-      var svg = d3.select("div#chart")
-        .append("div")
-        .classed("svg-container", true)
-        .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
-        .classed("svg-content-responsive", true)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        rawData = rawData.dataset.data.reverse();
 
-      rawData = rawData.dataset.data.reverse();
-
-      _public.data = rawData.map(function (d) {
-        var pItem = [];
-        pItem.date = _private.parseDate(d[0]);
-        pItem.close = +d[4];
-        return pItem;
-      });
-
-      var data = _public.data;
-
-      var xAxis = d3.svg.axis()
-        .scale(_public.xTimeScale)
-        .orient("bottom");
-
-      var yAxis = d3.svg.axis()
-        .scale(_public.yTimeScale)
-        .orient("right")
-        .ticks(5);
-
-
-
-
-      var line = d3.svg.line()
-        .x(function (d) {
-          return _public.xTimeScale(d.date);
-        })
-        .y(function (d) {
-          return _public.yTimeScale(d.close);
+        _public.data = rawData.map(function (d) {
+          var pItem = [];
+          pItem.date = _private.parseDate(d[0]);
+          pItem.close = +d[4];
+          return pItem;
         });
 
-      _public.xTimeScale.domain(d3.extent(data, function (d) {
+        resolve(_public.data);
+
+      });
+    },
+    calculateUserHeld: function () {
+      if (!_public.data) {
+        console.warn('rawData not processed');
+      } else {
+        _public.userHeld = [];
+
+        _public.data.forEach(function (d, i, a) {
+          var prev = _public.userHeld[i - 1];
+          var pItem = [];
+          pItem.date = d.date;
+          pItem.close = d.close;
+
+          if (!prev) {
+            pItem.userClose = _public.userDataInit;
+            pItem.delta = 0;
+
+          } else {
+            pItem.delta = (d.close - prev.close) / prev.close;
+            pItem.userClose = +(prev.userClose + (prev.userClose * pItem.delta));
+
+          }
+          _public.userHeld.push(pItem);
+
+        });
+
+
+      }
+    },
+    calculateUserSold: function () {
+      var holdValue;
+      var arr = _public.userHeld.slice(0);
+
+      _public.userSold = arr.map(function (d, i, a) {
+        var prev = a[i - 2];
+        var pItem = [];
+
+        if (d.date >= _public.sellDate && d.date <= _public.buyDate) {
+
+          if (holdValue) {
+            console.log(holdValue);
+            pItem.date = d.date;
+            pItem.delta = d.delta;
+            pItem.userClose = holdValue;
+            return pItem;
+          } else {
+            holdValue = d.userClose;
+            pItem.userClose = d.userClose;
+            pItem.date = d.date;
+            return pItem;
+          }
+
+        } else if (d.date >= _public.buyDate) {
+          pItem.date = d.date;
+          console.log(prev, i)
+          pItem.userClose = (prev.userClose + (prev.userClose * d.delta));
+          console.log(pItem, i)
+
+          return pItem;
+        } else {
+          pItem.userClose = d.userClose;
+          pItem.delta = d.delta
+          return pItem;
+
+        }
+      });
+    },
+    drawUserLine: function () {
+      _public.calculateUserHeld();
+      // _public.render(_public.userHeld);
+      _public.calculateUserSold();
+      _public.render(_public.userSold);
+
+
+
+    },
+    render: function (data) {
+
+      console.log(data)
+        // SVG setup
+
+      xScale.domain(d3.extent(data, function (d) {
         return d.date;
       }));
 
-      _public.yTimeScale.domain([0, d3.max(data, function (d) {
-        return d.close;
+      yScale.domain([0, d3.max(data, function (d) {
+        if (d.close && d.userClose) {
+          // console.log(d.userClose)
+          return d.userClose;
+        } else {
+          return d.close;
+
+        }
       })]);
+
+      var line = d3.svg.line()
+        .x(function (d) {
+          return xScale(d.date);
+        })
+        .y(function (d) {
+          if (d.close && d.userClose) {
+            return yScale(d.userClose);
+          } else if (!d.close) {
+            return yScale(d.userClose);
+          } else {
+            return yScale(d.close);
+          }
+        });
+
+      // svg.append("g").attr("class","y axis").call(yAxis);
+
+      svg.selectAll(".y.axis")
+        .remove();
+      svg.selectAll(".x.axis")
+        .remove();
+
+      svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
       // todo - numbers not responsive size
       svg.append("g")
@@ -138,145 +214,16 @@ var d3Chart = module.exports = (function () {
         .attr("dx", ".71em")
         .call(xAxis);
 
+      // remove any previously drawn lines
+      // svg.selectAll(".line")
+      //   .remove();
+
+      // enter and append these lines
       svg.append("path")
-        .datum(data)
+        .data([data])
         .attr("class", "line")
         .attr("d", line);
 
-    },
-    drawUserLine: function () {
-
-      var calculateUserHeld = function () {
-        // console.log(userHold);
-
-        // _public.userHeld = _.slice(_public.data);
-
-        //  console.log(_public.userHeld);
-
-        _public.userHeld = _public.data.map(function (d, i, a) {
-          var prev = a[i - 1];
-          if (!prev) {
-            d.delta = 0;
-            d.userClose = _public.userDataInit;
-            return [d.date, d.delta, d.userClose];
-
-            // _public.userHeld[i].slice(0,2, [d.date, d.delta, d.userClose]);
-          } else {
-
-            d.delta = (d.close - prev.close) / prev.close;
-            d.userClose = +(prev.userClose + (prev.userClose * d.delta));
-            // console.log(d.userClose)
-            return [d.date, d.delta, d.userClose];
-
-            // _public.userHeld[i].slice(0,2, [d.date, d.delta, d.userClose]);
-          }
-
-        });
-
-
-      };
-
-      if (!_public.data) {
-        console.warn('rawData not processed');
-      } else {
-
-        calculateUserHeld();
-
-      }
-      // var userSold = _public.userData.slice();
-      // console.log(userHeld)
-
-
-      var calculateUserSold = function () {
-        var holdValue;
-
-        //_public.userSold = _.slice(_public.userHeld);
-
-        _public.userSold = _public.userHeld.map(function (d, i, a) {
-
-          var prev = a[i - 1];
-          console.log(prev)
-          console.log(d)
-
-          if (d[0] >= _public.sellDate && d[0] <= _public.buyDate) {
-            if (holdValue) {
-
-              d[2] = holdValue;
-              // console.log('if', i)
-              // console.log(userHold[1][i][2]);
-            } else {
-              // console.log(userHold[1]);
-              // console.log('else', i)
-
-              holdValue = d[2];
-            }
-
-          } else if (d[0] >= _public.buyDate) {
-
-            var userClose = +(prev[2] + (prev[2] * d[1]));
-            return userClose
-              //_public.userSold[i].splice(2, 1, userClose);
-              //  console.log(_public.userSold[i]);
-          }
-        });
-      };
-
-      calculateUserSold();
-
-
-      _public.render(_public.userHeld);
-      // _public.render(_public.userSold);
-
-
-    },
-    render: function (data) {
-      var margin = {
-        top: 10,
-        right: 0,
-        bottom: 20,
-        left: 0
-      };
-      var y1 = _public.yTimeScale;
-      var yAxisRight = d3.svg.axis()
-        .scale(y1)
-        .orient("right")
-        .ticks(5);
-
-      // var found = _public.userData.indexOf
-      var userLine = d3.svg.line()
-        .x(function (d) {
-          return _public.xTimeScale(d[0]);
-        })
-        .y(function (d) {
-          return y1(d[2]);
-        });
-
-      y1.domain([0,
-        d3.max(data, function (d) {
-          return Math.max(d[2]);
-        })
-      ]);
-
-      var existingLines = d3.selectAll("g#user-line");
-
-      if (existingLines[0].length > 0) {
-        existingLines.remove();
-      }
-
-      console.log(_public.userSold)
-      console.log(_public.userHeld)
-
-      var svg = d3.select("svg");
-      svg.append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-        .attr("id", "user-line")
-        .append("g")
-        .attr("class", "y axis")
-        .call(yAxisRight)
-        .append("path")
-        .data(data)
-        .attr("class", "user-line")
-        .attr("d", userLine);
 
     }
 
@@ -289,4 +236,6 @@ var d3Chart = module.exports = (function () {
 
 // todo - separate draw axis, etc from the line(s)
 d3Chart.get("/data")
-  .then(d3Chart.drawLineChart);
+  .then(d3Chart.processRaw)
+  .then(d3Chart.render);
+// d3Chart.render2(data);
