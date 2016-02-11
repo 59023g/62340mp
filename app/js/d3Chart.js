@@ -52,7 +52,7 @@ var d3Chart = module.exports = (function () {
   var _public = {
     data: [],
     sellDate: new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)"),
-    buyDate: new Date("April 2009 00:00:00 GMT-0700 (PDT)"),
+    buyDate: new Date("Tue Mar 31 2009 00:00:00 GMT-0700 (PDT)"),
     userHeld: [],
     userSold: [],
     userDataInit: 1000,
