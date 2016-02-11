@@ -118,41 +118,41 @@ var d3Chart = module.exports = (function () {
       }
     },
     calculateUserSold: function () {
-      var holdValue;
       var arr = _public.userHeld.slice(0);
+      var holdValue;
 
-      _public.userSold = arr.map(function (d, i, a) {
-        var prev = a[i - 2];
+      arr.forEach(function (d, i, a) {
         var pItem = [];
+        pItem.date = d.date;
+        pItem.delta = d.delta;
 
+        // dates before sell
+        if (d.date <= _public.sellDate) {
+          pItem.delta = d.delta;
+          pItem.userClose = d.userClose;
+        }
+
+        // date range when hold
         if (d.date >= _public.sellDate && d.date <= _public.buyDate) {
-
+          pItem.delta = 0;
           if (holdValue) {
-            console.log(holdValue);
-            pItem.date = d.date;
-            pItem.delta = d.delta;
             pItem.userClose = holdValue;
-            return pItem;
           } else {
             holdValue = d.userClose;
-            pItem.userClose = d.userClose;
-            pItem.date = d.date;
-            return pItem;
+            pItem.userClose = holdValue;
           }
-
-        } else if (d.date >= _public.buyDate) {
-          pItem.date = d.date;
-          console.log(prev, i)
-          pItem.userClose = (prev.userClose + (prev.userClose * d.delta));
-          console.log(pItem, i)
-
-          return pItem;
-        } else {
-          pItem.userClose = d.userClose;
-          pItem.delta = d.delta
-          return pItem;
-
         }
+
+        // date range when buy at bottom
+        if (d.date >= _public.buyDate) {
+          var prev = _public.userSold[i - 1];
+          pItem.date = d.date;
+          pItem.delta = d.delta;
+          pItem.userClose = +(prev.userClose + (prev.userClose * d.delta));
+        }
+
+        _public.userSold.push(pItem);
+
       });
     },
     drawUserLine: function () {
