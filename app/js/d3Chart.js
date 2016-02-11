@@ -4,18 +4,50 @@ var d3 = require('d3'),
 // todo - pre-render chart on server :/
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
+var margin = {
+  top: 10,
+  right: 0,
+  bottom: 20,
+  left: 0
+};
 
+var _private = {
+  formatDate: d3.time.format("%Y-%m-%d"),
+  parseDate: d3.time.format("%Y-%m-%d")
+    .parse,
+  width: parseInt(d3.select('#chart')
+    .style('width'), 10),
+  height: window.innerHeight,
+};
+var xScale = d3.time.scale()
+  .range([0, _private.width]);
+
+var yScale = d3.scale.linear()
+  .range([_private.height, 0]);
+
+var xAxis = d3.svg.axis()
+  .scale(xScale)
+  .orient("bottom");
+
+var yAxis = d3.svg.axis()
+  .scale(yScale)
+  .orient("right")
+  .ticks(5);
+
+
+
+var svg = d3.select("div#chart")
+  .append("div")
+  .classed("svg-container", true)
+  .append("svg")
+  .attr("preserveAspectRatio", "xMinYMin meet")
+  .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
+  .classed("svg-content-responsive", true)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var d3Chart = module.exports = (function () {
 
-  var _private = {
-    formatDate: d3.time.format("%Y-%m-%d"),
-    parseDate: d3.time.format("%Y-%m-%d")
-      .parse,
-    width: parseInt(d3.select('#chart')
-      .style('width'), 10),
-    height: window.innerHeight,
-  };
 
   var _public = {
     data: [],

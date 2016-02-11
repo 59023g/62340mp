@@ -24,3 +24,7 @@ body {
 .svg-container {
   min-width: 1280px;
 }
+
+.line {
+  stroke-opacity: .4
+}
