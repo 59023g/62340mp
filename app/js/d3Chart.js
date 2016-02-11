@@ -154,6 +154,54 @@ var d3Chart = module.exports = (function () {
         _public.userSold.push(pItem);
 
       });
+
+      // _public.userSold.forEach(function (d, i, a) {
+      //   var pItem = [];
+      //   var prev = a[i - 1];
+      //
+      //
+      //   // console.log(d)
+      //
+      //
+      // });
+      //console.log(_public.userSold)
+      // _public.userSold = arr.map(function (d, i, a) {
+      //   var prev = a[i - 2];
+      //   var pItem = [];
+      //
+      //   // dates before sell
+      //   if (d.date <= _public.sellDate) {
+      //     pItem.date = d.date;
+      //     pItem.delta = d.delta;
+      //     pItem.userClose = d.userClose;
+      //     return pItem;
+      //   }
+      //   // dates held
+      //   if (d.date >= _public.sellDate && d.date <= _public.buyDate) {
+      //     pItem.date = d.date;
+      //     pItem.delta = 0;
+      //     if (holdValue) {
+      //       pItem.userClose = holdValue;
+      //     } else {
+      //       holdValue = d.userClose;
+      //       pItem.userClose = holdValue;
+      //     }
+      //     console.log(i, pItem)
+      //     return pItem;
+      //   }
+      //
+      //   // dates after hold
+      //   if (d.date >= _public.buyDate) {
+      //     // console.log(i)
+      //     pItem.date = d.date;
+      //     pItem.delta = d.delta;
+      //
+      //     console.log(_public.userSold[i])
+      //     pItem.userClose = (holdValue + (holdValue * d.delta));
+      //
+      //     return pItem;
+      //   }
+      // });
     },
     drawUserLine: function () {
       _public.calculateUserHeld();
