@@ -23,17 +23,9 @@ var _private = {
 var xScale = d3.time.scale()
   .range([0, _private.width]);
 
-var yScale = d3.scale.linear()
-  .range([_private.height, 0]);
-
 var xAxis = d3.svg.axis()
   .scale(xScale)
   .orient("bottom");
-
-var yAxis = d3.svg.axis()
-  .scale(yScale)
-  .orient("right")
-  .ticks(5);
 
 var svg = d3.select("div#chart")
   .append("div")
@@ -155,16 +147,20 @@ var d3Chart = module.exports = (function () {
     },
     drawUserLine: function () {
       _public.calculateUserHeld();
-      _public.render(_public.userHeld);
+        // _public.render(_public.userHeld);
       _public.calculateUserSold();
-      _public.render(_public.userSold);
+      // _public.render(_public.userSold);
 
-
+      var masterArray = [_public.userHeld, _public.userSold, _public.data];
+      _public.render(masterArray);
 
     },
     render: function (data) {
 
       // console.log(data)
+
+      var yScale = d3.scale.linear()
+        .range([_private.height, 0]);
 
       xScale.domain(d3.extent(data, function (d) {
         return d.date;
@@ -191,13 +187,35 @@ var d3Chart = module.exports = (function () {
         });
 
 
+      var yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("right")
+        .ticks(5);
 
+      if (svg.selectAll(".y.axis")[0].length < 1) {
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+      } else {
+        svg.selectAll(".y.axis")
+          .transition()
+          .duration(1500)
+          .call(yAxis);
+      }
 
-      // enter and append these lines
+      var lines = svg.append("path");
+
       svg.append("path")
         .data([data])
         .attr("class", "line")
-        .attr("d", line);
+        .attr("d", line)
+        .enter()
+          .append("path")
+          .attr("class", "line")
+          .attr("d", line);
+
+      console.log(svg.selectAll(".line"));
+
 
       svg.selectAll(".y.axis")
         .remove();
@@ -213,6 +231,8 @@ var d3Chart = module.exports = (function () {
         .attr("class", "x axis")
         .attr("dx", ".71em")
         .call(xAxis);
+
+
 
     }
 
