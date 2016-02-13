@@ -102,8 +102,6 @@ var d3Chart = module.exports = (function () {
           _public.userHeld.push(pItem);
 
         });
-
-
       }
     },
     calculateUserSold: function () {
@@ -216,7 +214,6 @@ var d3Chart = module.exports = (function () {
 
       console.log(svg.selectAll(".line"));
 
-
       svg.selectAll(".y.axis")
         .remove();
       svg.selectAll(".x.axis")
@@ -232,14 +229,11 @@ var d3Chart = module.exports = (function () {
         .attr("dx", ".71em")
         .call(xAxis);
 
-
-
     }
 
   };
 
   return _public;
-
 
 })();
 
@@ -247,4 +241,3 @@ var d3Chart = module.exports = (function () {
 d3Chart.get("/data")
   .then(d3Chart.processRaw)
   .then(d3Chart.render);
-// d3Chart.render2(data);
