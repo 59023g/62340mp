@@ -38,8 +38,6 @@ var svg = d3.select("div#chart")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var d3Chart = module.exports = (function () {
-
-
   var _public = {
     data: [],
     sellDate: new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)"),
@@ -211,8 +209,6 @@ var d3Chart = module.exports = (function () {
           .append("path")
           .attr("class", "line")
           .attr("d", line);
-
-      console.log(svg.selectAll(".line"));
 
       svg.selectAll(".y.axis")
         .remove();
