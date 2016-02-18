@@ -18,7 +18,6 @@ var production = (process.env.NODE_ENV === 'development');
 
 gulp.task('default', ['clean', 'js:app', 'js:libs']);
 
-
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
   notify.onError({
@@ -38,7 +37,6 @@ gulp.src = function() {
     }));
 };
 
-
 // note - dist should be build artifact
 gulp.task('clean', function() {
   del('./app/dist/**/**').then(function(paths) {
@@ -46,8 +44,6 @@ gulp.task('clean', function() {
     return;
   });
 });
-
-
 
 gulp.task('js:libs', function() {
   return browserify()
@@ -58,7 +54,6 @@ gulp.task('js:libs', function() {
     .pipe(source('libs.js'))
     .pipe(gulp.dest('./app/dist/'));
 });
-
 
 gulp.task('js:app', function() {
   var props = {
