@@ -159,18 +159,15 @@ var d3Chart = module.exports = (function () {
     },
     render: function (data) {
 
-      // console.log(data)
       // create main data set with all lines to be rendered
      dataSet.push(data)
 
-      var yScale = d3.scale.linear()
-        .range([_private.height, 0]);
-
-      xScale.domain(d3.extent(data, function (d) {
+      xScale.domain(d3.extent(dataSet, function (d) {
+      //  console.log(d)
         return d.date;
       }));
 
-      yScale.domain([0, d3.max(data, function (d) {
+      yScale.domain([0, d3.max(dataSet, function (d) {
         if (d.userClose) {
           return d.userClose;
         } else {
@@ -191,24 +188,15 @@ var d3Chart = module.exports = (function () {
         });
 
 
-      var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("right")
-        .ticks(5);
-
-      if (svg.selectAll(".y.axis")[0].length < 1) {
-        svg.append("g")
-          .attr("class", "y axis")
-          .call(yAxis);
-      } else {
-        svg.selectAll(".y.axis")
-          .transition()
-          .duration(1500)
-          .call(yAxis);
+      function handleMouseOver(d, i) {
+        console.log(d,i);
       }
 
-      var lines = svg.append("path");
+      function handleMouseOut(d, i) {
+        console.log(d,i);
+      }
 
+      // enter and append these lines
       svg.append("path")
         .data([data])
         .attr("class", "line")
