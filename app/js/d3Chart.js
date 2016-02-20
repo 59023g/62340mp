@@ -27,6 +27,7 @@ var xAxis = d3.svg.axis()
   .scale(xScale)
   .orient("bottom");
 
+  var dataSet = [];
 var svg = d3.select("div#chart")
   .append("div")
   .classed("svg-container", true)
@@ -154,6 +155,8 @@ var d3Chart = module.exports = (function () {
     render: function (data) {
 
       // console.log(data)
+      // create main data set with all lines to be rendered
+     dataSet.push(data)
 
       var yScale = d3.scale.linear()
         .range([_private.height, 0]);
