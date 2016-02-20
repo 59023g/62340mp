@@ -200,11 +200,11 @@ var d3Chart = module.exports = (function () {
       svg.append("path")
         .data([data])
         .attr("class", "line")
-        .attr("d", line)
-        .enter()
-          .append("path")
-          .attr("class", "line")
-          .attr("d", line);
+        .attr("d", line);
+        // .on("mouseover", handleMouseOver)
+        // .on("mouseout", handleMouseOut);
+
+      var lines = svg.selectAll(".line");
 
       svg.selectAll(".y.axis")
         .remove();
@@ -220,7 +220,6 @@ var d3Chart = module.exports = (function () {
         .attr("class", "x axis")
         .attr("dx", ".71em")
         .call(xAxis);
-
     }
 
   };
