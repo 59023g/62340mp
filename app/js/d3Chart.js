@@ -23,11 +23,19 @@ var _private = {
 var xScale = d3.time.scale()
   .range([0, _private.width]);
 
+var yScale = d3.scale.linear()
+  .range([_private.height, 0]);
+
 var xAxis = d3.svg.axis()
   .scale(xScale)
   .orient("bottom");
 
+var yAxis = d3.svg.axis()
+  .scale(yScale)
+  .orient("right")
+  .ticks(5);
   var dataSet = [];
+
 var svg = d3.select("div#chart")
   .append("div")
   .classed("svg-container", true)
