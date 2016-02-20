@@ -204,15 +204,15 @@ var d3Chart = module.exports = (function () {
         console.log(d,i);
       }
 
-      // enter and append these lines
-      svg.append("path")
-        .data([data])
-        .attr("class", "line")
-        .attr("d", line);
-        // .on("mouseover", handleMouseOver)
-        // .on("mouseout", handleMouseOut);
+      svg.selectAll(".line").remove();
 
-      var lines = svg.selectAll(".line");
+      var lines = svg.selectAll(".line")
+        .data(dataSet)
+        .attr("class","line");
+
+      lines.enter().append("path")
+        .attr("class","line")
+        .attr("d",line);
 
       svg.selectAll(".y.axis")
         .remove();
