@@ -34,7 +34,7 @@ var yAxis = d3.svg.axis()
   .scale(yScale)
   .orient("right")
   .ticks(5);
-  var dataSet = [];
+var dataSet = [];
 
 var svg = d3.select("div#chart")
   .append("div")
@@ -160,10 +160,9 @@ var d3Chart = module.exports = (function () {
     render: function (data) {
 
       // create main data set with all lines to be rendered
-     dataSet.push(data)
+      dataSet.push(data);
 
-      xScale.domain(d3.extent(dataSet, function (d) {
-      //  console.log(d)
+      xScale.domain(d3.extent(data, function (d) {
         return d.date;
       }));
 
@@ -182,9 +181,9 @@ var d3Chart = module.exports = (function () {
 
       yScale.domain([yMin, yMax]);
 
-
       var line = d3.svg.line()
         .x(function (d) {
+          console.log(d)
           return xScale(d.date);
         })
         .y(function (d) {
@@ -197,11 +196,11 @@ var d3Chart = module.exports = (function () {
 
 
       function handleMouseOver(d, i) {
-        console.log(d,i);
+        console.log(d, i);
       }
 
       function handleMouseOut(d, i) {
-        console.log(d,i);
+        console.log(d, i);
       }
 
       svg.selectAll(".line").remove();
