@@ -152,12 +152,9 @@ var d3Chart = module.exports = (function () {
     },
     drawUserLine: function () {
       _public.calculateUserHeld();
-        // _public.render(_public.userHeld);
+      _public.render(_public.userHeld);
       _public.calculateUserSold();
-      // _public.render(_public.userSold);
-
-      var masterArray = [_public.userHeld, _public.userSold, _public.data];
-      _public.render(masterArray);
+      _public.render(_public.userSold);
 
     },
     render: function (data) {
