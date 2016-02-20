@@ -183,7 +183,6 @@ var d3Chart = module.exports = (function () {
 
       var line = d3.svg.line()
         .x(function (d) {
-          console.log(d)
           return xScale(d.date);
         })
         .y(function (d) {
@@ -203,24 +202,42 @@ var d3Chart = module.exports = (function () {
         console.log(d, i);
       }
 
-      svg.selectAll(".line").remove();
+      if (svg.selectAll(".y.axis")[0].length < 1) {
+        svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+      } else {
+        svg.selectAll(".y.axis")
+          .transition()
+          .duration(1500)
+          .call(yAxis);
+      }
 
       var lines = svg.selectAll(".line")
         .data(dataSet)
-        .attr("class","line");
+        .attr("class", "line");
 
-      lines.enter().append("path")
-        .attr("class","line")
-        .attr("d",line);
+      lines.transition()
+        .duration(1500)
+        .attr("d", line)
+        .style("stroke", function () {
+          return '#' + Math.floor(Math.random() * 16777215)
+            .toString(16);
+        });
 
-      svg.selectAll(".y.axis")
+      // enter any new lines
+      lines.enter()
+        .append("path")
+        .attr("class", "line")
+        .attr("d", line)
+        .style("stroke", function () {
+          return '#' + Math.floor(Math.random() * 16777215)
+            .toString(16);
+        });
+
+      // exit
+      lines.exit()
         .remove();
-      svg.selectAll(".x.axis")
-        .remove();
-
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
 
       // todo - numbers not responsive size
       svg.append("g")
