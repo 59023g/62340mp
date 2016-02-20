@@ -167,13 +167,21 @@ var d3Chart = module.exports = (function () {
         return d.date;
       }));
 
-      yScale.domain([0, d3.max(dataSet, function (d) {
-        if (d.userClose) {
-          return d.userClose;
-        } else {
-          return d.close;
-        }
-      })]);
+      var yMin = 0;
+
+      var yMax = dataSet.reduce(function (pv, cv) {
+        var currentMax = cv.reduce(function (pv, cv, i, a) {
+          if (cv.userClose) {
+            return Math.max(pv, cv.userClose);
+          } else {
+            return Math.max(pv, cv.close);
+          }
+        });
+        return Math.max(pv, currentMax);
+      }, 0);
+
+      yScale.domain([yMin, yMax]);
+
 
       var line = d3.svg.line()
         .x(function (d) {
