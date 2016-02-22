@@ -224,39 +224,46 @@ var d3Chart = module.exports = (function () {
             .toString(16);
         });
 
-        function findValue(d, i) {
-          var mouseX = d3.mouse(this.parentNode)[0];
-          var dataX = xScale.invert(mouseX);
+      function findValue(d, i) {
+        var mouseX = d3.mouse(this.parentNode)[0];
+        var dataX = xScale.invert(mouseX);
 
-          var j = d.length;
-          while ((j--) && (d[j].date > dataX));
+        var j = d.length;
+        while ((j--) && (d[j].date > dataX));
 
-          var datapoint;
-          if (j >= 0) {
-            if (isNaN(d[j + 1]) || (dataX - d[j].date < d[j + 1].date - dataX)) {
-              datapoint = d[j];
-            } else {
-              datapoint = d[j + 1];
-
-            }
+        var datapoint;
+        if (j >= 0) {
+          if (isNaN(d[j + 1]) || (dataX - d[j].date < d[j + 1].date - dataX)) {
+            datapoint = d[j];
           } else {
-            datapoint = d[0];
+            datapoint = d[j + 1];
+
           }
-
-          div.transition()
-            .duration(200)
-            .style("opacity", 0.9);
-          div.html(datapoint.date + "<br/>" + datapoint.close)
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY - 28) + "px");
-
-          //Do something with your datapoint value:
-           console.log("Crossed line " + i + " near " + [datapoint.date, datapoint.close, datapoint.userClose]);
+        } else {
+          datapoint = d[0];
         }
 
-      var div = svg.append("div")
+        drawSelectionData(i, datapoint);
+
+      }
+
+      function drawSelectionData(i, datapoint) {
+
+        var dateFormat = d3.time.format("%Y/%m");
+
+        div.html("<div class=\"selection-content\">" + datapoint.close + "<br/>" + "<span style=\"font-size: 12px\">" + dateFormat(datapoint.date) + "</span>" + "</div>")
+          .transition()
+          .duration(200)
+          .style("opacity", 0.9)
+          .style("left", (d3.event.pageX) + "px");
+
+        console.log("Crossed line " + i + " near " + [datapoint.date, datapoint.close, datapoint.userClose]);
+
+      }
+      var div = d3.select(".svg-container")
+        .append("div")
         .attr("class", "selection")
-        .style("opacity", 1);
+        .style("opacity", 0);
 
       // enter any new lines
       lines.enter()
@@ -268,6 +275,7 @@ var d3Chart = module.exports = (function () {
             .toString(16);
         })
         .on("mouseover", findValue);
+
 
       // exit
       lines.exit()
