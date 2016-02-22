@@ -26,18 +26,14 @@ body {
 }
 
 .line {
-  stroke-opacity: .4
+  stroke-opacity: 1
 }
 
-div.tooltip {
+div.selection {
+  background-color: rgb(222, 222, 220);
+  bottom: 0;
   position: absolute;
-  text-align: center;
-  width: 60px;
-  height: 28px;
-  padding: 2px;
-  font: 12px sans-serif;
-  background: white;
-  border: 1px solid black;
-  border-radius: 0;
-  pointer-events: none;
+  right: 0;
+  top: 0;
+  width: 1px;
 }
