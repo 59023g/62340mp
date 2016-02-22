@@ -43,7 +43,6 @@ var svg = d3.select("div#chart")
   .attr("preserveAspectRatio", "xMinYMin meet")
   .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
   .classed("svg-content-responsive", true)
-  .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var d3Chart = module.exports = (function () {
@@ -225,10 +224,39 @@ var d3Chart = module.exports = (function () {
             .toString(16);
         });
 
-      var div = d3.select("body")
-        .append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
+        function findValue(d, i) {
+          var mouseX = d3.mouse(this.parentNode)[0];
+          var dataX = xScale.invert(mouseX);
+
+          var j = d.length;
+          while ((j--) && (d[j].date > dataX));
+
+          var datapoint;
+          if (j >= 0) {
+            if (isNaN(d[j + 1]) || (dataX - d[j].date < d[j + 1].date - dataX)) {
+              datapoint = d[j];
+            } else {
+              datapoint = d[j + 1];
+
+            }
+          } else {
+            datapoint = d[0];
+          }
+
+          div.transition()
+            .duration(200)
+            .style("opacity", 0.9);
+          div.html(datapoint.date + "<br/>" + datapoint.close)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+
+          //Do something with your datapoint value:
+           console.log("Crossed line " + i + " near " + [datapoint.date, datapoint.close, datapoint.userClose]);
+        }
+
+      var div = svg.append("div")
+        .attr("class", "selection")
+        .style("opacity", 1);
 
       // enter any new lines
       lines.enter()
@@ -239,14 +267,7 @@ var d3Chart = module.exports = (function () {
           return '#' + Math.floor(Math.random() * 16777215)
             .toString(16);
         })
-        .on("mouseover", function (d, i, a) {
-          div.transition()
-            .duration(200)
-            .style("opacity", 0.9);
-          div.html(d.date + "<br/>" + d.close)
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY - 28) + "px");
-        });
+        .on("mouseover", findValue);
 
       // exit
       lines.exit()
