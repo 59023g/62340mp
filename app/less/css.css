@@ -29,11 +29,18 @@ body {
   stroke-opacity: 1
 }
 
-div.selection {
+.selection {
   background-color: rgb(222, 222, 220);
   bottom: 0;
   position: absolute;
   right: 0;
   top: 0;
   width: 1px;
+}
+
+.selection-content {
+  font-size: 36px;
+  padding-left: 20px;
+  position: absolute;
+  bottom: 20px;
 }
