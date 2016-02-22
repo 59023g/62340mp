@@ -5,9 +5,9 @@ var d3 = require('d3'),
 // rawData = require('../../processData.js'),
 // ReactFauxDom = require('react-faux-dom');
 var margin = {
-  top: 10,
+  top: 50,
   right: 0,
-  bottom: 20,
+  bottom: 50,
   left: 0
 };
 
@@ -17,7 +17,7 @@ var _private = {
     .parse,
   width: parseInt(d3.select('#chart')
     .style('width'), 10),
-  height: window.innerHeight,
+  height: window.innerHeight - margin.top - margin.bottom,
 };
 
 var xScale = d3.time.scale()
@@ -48,7 +48,7 @@ var svg = d3.select("div#chart")
 var d3Chart = module.exports = (function () {
   var _public = {
     data: [],
-    sellDate: new Date("Aug 31 2007 00:00:00 GMT-0700 (PDT)"),
+    sellDate: new Date("Sep 31 2007 00:00:00 GMT-0700 (PDT)"),
     buyDate: new Date("Tue Mar 31 2009 00:00:00 GMT-0700 (PDT)"),
     userHeld: [],
     userSold: [],
@@ -251,15 +251,21 @@ var d3Chart = module.exports = (function () {
 
         var dateFormat = d3.time.format("%Y/%m");
 
-        div.html("<div class=\"selection-content\">" + datapoint.close + "<br/>" + "<span style=\"font-size: 12px\">" + dateFormat(datapoint.date) + "</span>" + "</div>")
+        div.html("<div class=\"selection-content right\" style=\"width: 160px\">" + datapoint.close + "<br/>" + "<span style=\"font-size: 12px\">" + dateFormat(datapoint.date) + "</span>" + "</div>")
           .transition()
           .duration(200)
           .style("opacity", 0.9)
           .style("left", (d3.event.pageX) + "px");
 
+        if (_private.width - (d3.event.pageX + 150) < 0) {
+          d3.select(".selection-content")
+            .classed("left", true);
+        }
+
         console.log("Crossed line " + i + " near " + [datapoint.date, datapoint.close, datapoint.userClose]);
 
       }
+
       var div = d3.select(".svg-container")
         .append("div")
         .attr("class", "selection")
