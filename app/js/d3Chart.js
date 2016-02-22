@@ -225,6 +225,11 @@ var d3Chart = module.exports = (function () {
             .toString(16);
         });
 
+      var div = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
       // enter any new lines
       lines.enter()
         .append("path")
@@ -233,6 +238,14 @@ var d3Chart = module.exports = (function () {
         .style("stroke", function () {
           return '#' + Math.floor(Math.random() * 16777215)
             .toString(16);
+        })
+        .on("mouseover", function (d, i, a) {
+          div.transition()
+            .duration(200)
+            .style("opacity", 0.9);
+          div.html(d.date + "<br/>" + d.close)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
         });
 
       // exit
