@@ -273,12 +273,20 @@ var d3Chart = module.exports = (function () {
           .style("opacity", 0.9)
           .style("left", (d3.event.pageX) + "px");
 
-        selectionContent.html(datapoint.close + "<br/>" + "<span style=\"font-size: 12px\">" + dateFormat(datapoint.date) + "</span>");
+        selectionContent
+          .html(numberFormat(whichClose) + "<br/>" + "<span style=\"font-size: 14px\">" + dateFormat(datapoint.date) + "</span>");
 
 
         if (_private.width - (d3.event.pageX + 150) < 0) {
+          console.log('hello')
           d3.select(".selection-content")
-            .classed("left", true);
+            .classed("left", true)
+            .classed("right", false);
+
+        } else {
+          d3.select(".selection-content")
+            .classed("right", true)
+            .classed("left", false);
         }
 
         console.log("Crossed line " + i + " near " + [datapoint.date, datapoint.close, datapoint.userClose]);
