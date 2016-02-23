@@ -256,7 +256,17 @@ var d3Chart = module.exports = (function () {
 
       function drawSelectionData(i, datapoint) {
 
-        var dateFormat = d3.time.format("%Y/%m");
+        var whichClose;
+        var dateFormat = d3.time.format("%Y/%m"),
+            numberFormat = d3.format("$.5s");
+
+        // depending on line index define which close value to use
+        if( i > 0 ) {
+          whichClose = datapoint.userClose;
+        } else {
+          whichClose = datapoint.close;
+        }
+
 
         selection
           .transition()
