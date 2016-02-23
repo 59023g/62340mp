@@ -195,15 +195,6 @@ var d3Chart = module.exports = (function () {
           }
         });
 
-
-      function handleMouseOver(d, i) {
-        console.log(d, i);
-      }
-
-      function handleMouseOut(d, i) {
-        console.log(d, i);
-      }
-
       if (svg.selectAll(".y.axis")[0].length < 1) {
         svg.append("g")
           .attr("class", "y axis")
@@ -289,7 +280,6 @@ var d3Chart = module.exports = (function () {
             .classed("left", false);
         }
 
-        console.log("Crossed line " + i + " near " + [datapoint.date, datapoint.close, datapoint.userClose]);
 
       }
 
