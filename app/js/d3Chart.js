@@ -11,6 +11,9 @@ var margin = {
   left: 0
 };
 
+var selection;
+var selectionContent;
+
 var _private = {
   formatDate: d3.time.format("%Y-%m-%d"),
   parseDate: d3.time.format("%Y-%m-%d")
@@ -247,15 +250,31 @@ var d3Chart = module.exports = (function () {
 
       }
 
+
+      // only draw selection div once
+      if (d3.selectAll(".selection")[0].length < 1) {
+        selection = d3.select(".svg-container")
+          .append("div")
+          .attr("class", "selection")
+          .style("opacity", 0);
+
+        selectionContent = d3.select(".selection")
+          .append("div")
+          .attr("class", "selection-content");
+      }
+
       function drawSelectionData(i, datapoint) {
 
         var dateFormat = d3.time.format("%Y/%m");
 
-        div.html("<div class=\"selection-content right\" style=\"width: 160px\">" + datapoint.close + "<br/>" + "<span style=\"font-size: 12px\">" + dateFormat(datapoint.date) + "</span>" + "</div>")
+        selection
           .transition()
           .duration(200)
           .style("opacity", 0.9)
           .style("left", (d3.event.pageX) + "px");
+
+        selectionContent.html(datapoint.close + "<br/>" + "<span style=\"font-size: 12px\">" + dateFormat(datapoint.date) + "</span>");
+
 
         if (_private.width - (d3.event.pageX + 150) < 0) {
           d3.select(".selection-content")
@@ -266,10 +285,7 @@ var d3Chart = module.exports = (function () {
 
       }
 
-      var div = d3.select(".svg-container")
-        .append("div")
-        .attr("class", "selection")
-        .style("opacity", 0);
+
 
       // enter any new lines
       lines.enter()
