@@ -217,20 +217,14 @@ var d3Chart = module.exports = (function () {
       lines.transition()
         .duration(1500)
         .attr("d", line)
-        .style("stroke", function () {
-          return '#' + Math.floor(Math.random() * 16777215)
-            .toString(16);
-        });
+        .style("stroke", color);
 
       // enter any new lines
       lines.enter()
         .append("path")
         .attr("class", "line")
         .attr("d", line)
-        .style("stroke", function () {
-          return '#' + Math.floor(Math.random() * 16777215)
-            .toString(16);
-        })
+        .style("stroke", color)
         .on("mouseover", findValue);
 
 
@@ -245,6 +239,13 @@ var d3Chart = module.exports = (function () {
         .call(xAxis);
 
 
+      function color (d, i) {
+        var colors = [ "rgb(16,91,99)",
+                       "rgb(255,211,78)",
+                       "rgb(189,73,50)"];
+
+        return colors[i];
+      }
 
       function findValue(d, i) {
         var mouseX = d3.mouse(this.parentNode)[0];
@@ -301,7 +302,10 @@ var d3Chart = module.exports = (function () {
           .style("left", (d3.event.pageX) + "px");
 
         selectionContent
-          .html(numberFormat(whichClose) + "<br/>" + "<span style=\"font-size: 14px\">" + dateFormat(datapoint.date) + "</span>");
+          .attr("style", function() {
+              return "color:" + color(datapoint,i)
+          })
+          .html(numberFormat(whichClose) + "<br/>" + "<span style=\"font-size: 14px;\">" + dateFormat(datapoint.date) + "</span>");
 
 
         if (_private.width - (d3.event.pageX + 150) < 0) {
