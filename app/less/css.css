@@ -1,5 +1,7 @@
 body {
   font: 10px sans-serif;
+  font-family: 'Droid Sans Mono' ;
+  
 }
 .axis path, .axis line {
   fill: none;
@@ -13,6 +15,7 @@ body {
   fill: none;
   stroke: steelblue;
   stroke-width: 1.5px;
+  cursor: pointer;
 }
 
 .user-line {
@@ -42,6 +45,7 @@ body {
   font-size: 36px;
   position: absolute;
   bottom: 20px;
+  font-family: 'Droid Sans Mono' ;
 }
 
 .selection-content.left {
