@@ -13,7 +13,7 @@ var margin = {
 
 var selection;
 var selectionContent;
-
+var numberFormat = d3.format(".4s");
 var _private = {
   formatDate: d3.time.format("%Y-%m-%d"),
   parseDate: d3.time.format("%Y-%m-%d")
@@ -36,7 +36,10 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
   .scale(yScale)
   .orient("right")
-  .ticks(5);
+  .ticks(5)
+  .tickFormat(function (d) {
+    return numberFormat(d);
+  });
 var dataSet = [];
 
 var svg = d3.select("div#chart")
@@ -257,8 +260,7 @@ var d3Chart = module.exports = (function () {
       function drawSelectionData(i, datapoint) {
 
         var whichClose;
-        var dateFormat = d3.time.format("%Y/%m"),
-            numberFormat = d3.format("$.5s");
+        var dateFormat = d3.time.format("%Y/%m");
 
         // depending on line index define which close value to use
         if( i > 0 ) {
