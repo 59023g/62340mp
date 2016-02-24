@@ -56,7 +56,8 @@ var userInput = module.exports = React.createClass({
         this.handleSubmit
       } >
       < input type = "text"
-      placeholder = "Holdings"
+      placeholder = "Equity Holdings"
+      className= "inputForm"
       value = {
         this.state.stockHoldings
       }
@@ -64,13 +65,13 @@ var userInput = module.exports = React.createClass({
         this.handleStockHoldingsChange
       }
       /> < input type = "submit"
+      className = "inputSubmit"
       value = "Post"
       disabled = {
         !this.state.isNumber
       }
-      /> < span className = {
-        this.state.isNumber ? 'hide' : null
-      } > Must be a number. < /span> < /form>
+      />
+      < /form>
     );
   }
 });
