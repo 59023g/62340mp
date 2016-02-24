@@ -7,7 +7,7 @@ var d3 = require('d3'),
 var margin = {
   top: 50,
   right: 0,
-  bottom: 50,
+  bottom: 20,
   left: 0
 };
 
@@ -30,8 +30,7 @@ var yScale = d3.scale.linear()
   .range([_private.height, 0]);
 
 var xAxis = d3.svg.axis()
-  .scale(xScale)
-  .orient("bottom");
+  .scale(xScale);
 
 var yAxis = d3.svg.axis()
   .scale(yScale)
@@ -48,7 +47,6 @@ var svg = d3.select("div#chart")
   .append("svg")
   .attr("preserveAspectRatio", "xMinYMin meet")
   .attr("viewBox", "0 0 " + parseInt(_private.width + margin.left + margin.right) + " " + parseInt(_private.height + margin.bottom + margin.top))
-  .classed("svg-content-responsive", true)
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var d3Chart = module.exports = (function () {
@@ -235,13 +233,15 @@ var d3Chart = module.exports = (function () {
       // todo - numbers not responsive size
       svg.append("g")
         .attr("class", "x axis")
+        .attr("transform", "translate(0," + _private.height + ")")
         .attr("dx", ".71em")
         .call(xAxis);
 
 
+
       function color (d, i) {
         var colors = [ "rgb(16,91,99)",
-                       "rgb(255,211,78)",
+                       "rgb(234,177,54)",
                        "rgb(189,73,50)"];
 
         return colors[i];
@@ -303,9 +303,9 @@ var d3Chart = module.exports = (function () {
 
         selectionContent
           .attr("style", function() {
-              return "color:" + color(datapoint,i)
+              return "color:" + color(datapoint,i);
           })
-          .html(numberFormat(whichClose) + "<br/>" + "<span style=\"font-size: 14px;\">" + dateFormat(datapoint.date) + "</span>");
+          .html(numberFormat(whichClose) + "<br/>" + "<span style=\"font-size: 14px; letter-spacing: 0px;\">" + dateFormat(datapoint.date) + "</span>");
 
 
         if (_private.width - (d3.event.pageX + 150) < 0) {
