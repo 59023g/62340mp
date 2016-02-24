@@ -8,4 +8,4 @@ var React    = require('react'),
 // note - app deps
 var inputForm = require('./js/userInput.js');
 
-ReactDOM.render(React.createElement(inputForm), document.getElementById('app'));
+ReactDOM.render(React.createElement(inputForm), document.getElementById('input'));
