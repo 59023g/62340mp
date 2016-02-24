@@ -18,10 +18,11 @@ var App = module.exports = (function() {
                   </head>
                   <body>
                     <div id='app'>
-                      <UserInput text='testing'/>
+                    <div id='chart'></div>
+                    <div id='input'></div>
 
                     </div>
-                    <div id='chart'></div>
+
                     <script src="libs.js"></script>
                     <script src="app.min.js"></script>
                   </body>
