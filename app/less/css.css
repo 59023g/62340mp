@@ -1,7 +1,7 @@
 body {
   font: 10px sans-serif;
   font-family: 'Droid Sans Mono' ;
-  
+
 }
 .axis path, .axis line {
   fill: none;
@@ -32,6 +32,42 @@ body {
   stroke-opacity: 1
 }
 
+form {
+  position: absolute;
+}
+.inputForm {
+  height: 40px;
+      width: 500px;
+      padding: 10px;
+      font-size: 24px;
+      font-family: 'Droid Sans Mono';
+
+}
+.inputSubmit {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  height: 38px;
+  display: block;
+  width: 100px;
+  padding: 10px;
+  -webkit-appearance: none;
+  background: rgb(255, 255, 255);
+  font-family: 'Droid Sans Mono';
+  border: none;
+  border-left: 1px solid rgb(128, 128, 128);
+  cursor: pointer;
+}
+
+#chart {
+  position: absolute;
+      top: 20px;
+      height: 100%;
+      display: block;
+      left: 10px;
+      right: 10px;
+      bottom: 0px;
+}
 .selection {
   background-color: rgb(222, 222, 220);
   bottom: 0;
@@ -42,9 +78,9 @@ body {
 }
 
 .selection-content {
+  letter-spacing: -3px;
   font-size: 36px;
   position: absolute;
-  bottom: 20px;
   font-family: 'Droid Sans Mono' ;
 }
 
