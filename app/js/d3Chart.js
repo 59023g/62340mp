@@ -186,6 +186,7 @@ var d3Chart = module.exports = (function () {
 
       yScale.domain([yMin, yMax]);
 
+      // todo - area ? https://github.com/mbostock/d3/wiki/Stack-Layout
       var line = d3.svg.line()
         .x(function (d) {
           return xScale(d.date);
@@ -221,6 +222,30 @@ var d3Chart = module.exports = (function () {
             .toString(16);
         });
 
+      // enter any new lines
+      lines.enter()
+        .append("path")
+        .attr("class", "line")
+        .attr("d", line)
+        .style("stroke", function () {
+          return '#' + Math.floor(Math.random() * 16777215)
+            .toString(16);
+        })
+        .on("mouseover", findValue);
+
+
+      // exit
+      lines.exit()
+        .remove();
+
+      // todo - numbers not responsive size
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("dx", ".71em")
+        .call(xAxis);
+
+
+
       function findValue(d, i) {
         var mouseX = d3.mouse(this.parentNode)[0];
         var dataX = xScale.invert(mouseX);
@@ -244,7 +269,6 @@ var d3Chart = module.exports = (function () {
 
       }
 
-
       // only draw selection div once
       if (d3.selectAll(".selection")[0].length < 1) {
         selection = d3.select(".svg-container")
@@ -263,7 +287,7 @@ var d3Chart = module.exports = (function () {
         var dateFormat = d3.time.format("%Y/%m");
 
         // depending on line index define which close value to use
-        if( i > 0 ) {
+        if (i > 0) {
           whichClose = datapoint.userClose;
         } else {
           whichClose = datapoint.close;
@@ -281,7 +305,6 @@ var d3Chart = module.exports = (function () {
 
 
         if (_private.width - (d3.event.pageX + 150) < 0) {
-          console.log('hello')
           d3.select(".selection-content")
             .classed("left", true)
             .classed("right", false);
@@ -297,27 +320,6 @@ var d3Chart = module.exports = (function () {
 
 
 
-      // enter any new lines
-      lines.enter()
-        .append("path")
-        .attr("class", "line")
-        .attr("d", line)
-        .style("stroke", function () {
-          return '#' + Math.floor(Math.random() * 16777215)
-            .toString(16);
-        })
-        .on("mouseover", findValue);
-
-
-      // exit
-      lines.exit()
-        .remove();
-
-      // todo - numbers not responsive size
-      svg.append("g")
-        .attr("class", "x axis")
-        .attr("dx", ".71em")
-        .call(xAxis);
     }
 
   };
