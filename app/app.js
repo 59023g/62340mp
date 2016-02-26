@@ -1,5 +1,4 @@
 var React     = require('react');
-var UserInput = require('./js/userInput.js'); //this is the box component
 
 var App = module.exports = (function() {
 
@@ -18,9 +17,8 @@ var App = module.exports = (function() {
                   </head>
                   <body>
                     <div id='app'>
-                    <div id='chart'></div>
-                    <div id='input'></div>
-
+                      <div id='chart'></div>
+                      <div id='input'></div>
                     </div>
 
                     <script src="libs.js"></script>
