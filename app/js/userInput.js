@@ -6,25 +6,61 @@ var React = require('react'),
 var userInput = module.exports = React.createClass({
   getInitialState: function() {
     return {
-      monthlyFixed: '',
-      equityHoldings: '',
-      isNumber: false
+      monthlyFixed: {
+        value: '',
+        isNumber: false
+      },
+      equityHoldings: {
+        value: '',
+        isNumber: false
+      }
     };
   },
-  handleChange: function(e, i) {
+  handleChange: function(e, i, l, f, j) {
 
-    if (!Number(e.target.value)) {
+    var getFormName = e.target.form.name;
+    console.log(e)
+    console.log(getFormName);
+    // console.log(e, i, l, f, j)
+
+    // todo - compress this... literal eval?
+    if (getFormName === "equityHoldings") {
+      if (!Number(e.target.value)) {
+        this.setState({
+          equityHoldings: {
+            value: '',
+            isNumber: false
+          }
+        });
+        return;
+      }
       this.setState({
-        isNumber: false,
-        equityHoldings: ''
+        equityHoldings: {
+          value: e.target.value,
+          isNumber: true
+        }
       });
-      return;
-    }
-    this.setState({
-      isNumber: true,
-      equityHoldings: e.target.value
-    });
 
+    }
+
+    if (getFormName === "monthlyFixed") {
+      if (!Number(e.target.value)) {
+        this.setState({
+          monthlyFixed: {
+            value: '',
+            isNumber: false
+          }
+        });
+        return;
+      }
+      this.setState({
+        monthlyFixed: {
+          value: e.target.value,
+          isNumber: true
+        }
+      });
+
+    }
   },
   handleSubmit: function(e) {
 
@@ -66,7 +102,7 @@ var userInput = module.exports = React.createClass({
             type = "text"
             placeholder = "Total Equity Holdings"
             className= "inputForm"
-            value = { this.state.equityHoldings }
+            value = { this.state.equityHoldings.value }
             onChange = { this.handleChange }
           />
 
@@ -76,20 +112,21 @@ var userInput = module.exports = React.createClass({
             name = "equityHoldings"
             className = "inputSubmit"
             value = "Post"
-            disabled = { !this.state.isNumber }
+            disabled = { !this.state.equityHoldings.isNumber }
           />
 
         </form>
 
         <form
           className = "inputForm"
+          name = "monthlyFixed"
           onSubmit = { this.handleSubmit } >
 
           <input
             type = "text"
             placeholder = "Monthly Fixed Investment"
             className= "inputForm"
-            value = { this.state.monthlyFixed }
+            value = { this.state.monthlyFixed.value }
             onChange = { this.handleChange }
           />
 
@@ -99,7 +136,7 @@ var userInput = module.exports = React.createClass({
             name = "monthlyFixed"
             className = "inputSubmit"
             value = "Post"
-            disabled = { !this.state.isNumber }
+            disabled = { !this.state.monthlyFixed.isNumber }
           />
 
         </form>
