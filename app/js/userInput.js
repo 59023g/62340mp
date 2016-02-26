@@ -1,44 +1,46 @@
 var React = require('react'),
     d3Chart = {};
 // todo - create global user {} for state
-// *** abstract as generic input field ***
+// *** abstract as generic input field *** but not sure how i feel about React...
+
 var userInput = module.exports = React.createClass({
   getInitialState: function() {
     return {
-      stockHoldings: '',
+      monthlyFixed: '',
+      equityHoldings: '',
       isNumber: false
     };
   },
-  handleStockHoldingsChange: function(e, i) {
-    // todo - check out React.PropTypes to check type
-    // todo - parseInt if lead
-    console.log(e.target.value, e, i)
+  handleChange: function(e, i) {
+
     if (!Number(e.target.value)) {
       this.setState({
         isNumber: false,
-        stockHoldings: ''
+        equityHoldings: ''
       });
       return;
     }
     this.setState({
       isNumber: true,
-      stockHoldings: e.target.value
+      equityHoldings: e.target.value
     });
 
   },
   handleSubmit: function(e) {
+
+    console.log(e);
     e.preventDefault();
-    var stockHoldings = parseInt(this.state.stockHoldings.trim());
-    if (!stockHoldings) {
+    var equityHoldings = parseInt(this.state.equityHoldings.trim());
+    if (!equityHoldings) {
       return;
     } else if ( d3Chart ) {
-      d3Chart.userDataInit = stockHoldings;
+      d3Chart.userDataInit = equityHoldings;
       d3Chart.userData = [];
       d3Chart.drawUserLine();
     }
 
     this.setState({
-      stockHoldings: stockHoldings
+      equityHoldings: equityHoldings
     });
 
     // todo - post for server state sync
@@ -54,34 +56,55 @@ var userInput = module.exports = React.createClass({
   // JSX:
   render: function() {
     return (
+      <div>
+        <form
+          className = "inputForm "
+          name = "equityHoldings"
+          onSubmit = { this.handleSubmit } >
 
-      < form className = "inputForm"
-        onSubmit = { this.handleSubmit } >
-        < input type = "text"
-          placeholder = "Total Equity Holdings"
-          className= "inputForm"
-          value = { this.state.stockHoldings }
-          onChange = { this.handleStockHoldingsChange }
-        />
-        < input type = "text"
-          placeholder = "Monthly Fixed Investment"
-          className= "inputForm"
-          value = { this.state.fixedInvestment }
-          onChange = { this.handleStockHoldingsChange }
-        />
-        < input type = "submit"
-          name = "stockHoldings"
-          className = "inputSubmit stockHoldings"
-          value = "Post"
-          disabled = { !this.state.isNumber }
-        />
-        < input type = "submit"
-          name = "monthlyFixed"
-          className = "inputSubmit monthlyFixed"
-          value = "Post"
-          disabled = { !this.state.isNumber }
-        />
-      < /form>
+          <input
+            type = "text"
+            placeholder = "Total Equity Holdings"
+            className= "inputForm"
+            value = { this.state.equityHoldings }
+            onChange = { this.handleChange }
+          />
+
+          <input
+            type = "submit"
+            id = "equityHoldings"
+            name = "equityHoldings"
+            className = "inputSubmit"
+            value = "Post"
+            disabled = { !this.state.isNumber }
+          />
+
+        </form>
+
+        <form
+          className = "inputForm"
+          onSubmit = { this.handleSubmit } >
+
+          <input
+            type = "text"
+            placeholder = "Monthly Fixed Investment"
+            className= "inputForm"
+            value = { this.state.monthlyFixed }
+            onChange = { this.handleChange }
+          />
+
+          <input
+            type = "submit"
+            id = "monthlyFixed  "
+            name = "monthlyFixed"
+            className = "inputSubmit"
+            value = "Post"
+            disabled = { !this.state.isNumber }
+          />
+
+        </form>
+
+      </div>
     );
   }
 });
