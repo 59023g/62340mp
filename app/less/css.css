@@ -1,6 +1,6 @@
 body {
   font: 10px sans-serif;
-  font-family: 'Droid Sans Mono';
+  font-family: 'Droid Sans Mono', 'Hack';
 }
 .axis path, .axis line {
   fill: none;
@@ -23,6 +23,7 @@ body {
 }
 .svg-container {
   min-width: 1280px;
+  margin-top: 70px;
 }
 .line {
   stroke-opacity: 1
@@ -37,7 +38,8 @@ body {
   width: 500px;
   padding: 10px;
   font-size: 24px;
-  font-family: 'Droid Sans Mono';
+  font-family: 'Droid Sans Mono', serif;
+  position: relative;
 }
 :focus {
   outline: none;
@@ -49,20 +51,14 @@ body {
   padding: 10px;
   -webkit-appearance: none;
   background: rgb(161, 255, 173);
-  font-family: 'Droid Sans Mono';
+  font-family: 'Droid Sans Mono', monospace;
   border: none;
   border-left: .25px solid rgba(200, 200, 200, 0.6);
   cursor: pointer;
 }
 
-.inputSubmit.stockHoldings {
+.inputSubmit {
   top: 11px;
-  right: 11px;
-  height: 38px;
-}
-
-.inputSubmit.monthlyFixed {
-  top: 51px;
   right: 11px;
   height: 38px;
 }
@@ -70,6 +66,7 @@ body {
 .inputSubmit:disabled {
   background-color: white;
 }
+
 #chart { }
 
 .selection {
@@ -80,11 +77,13 @@ body {
   top: 0;
   width: 1px;
 }
+
 .selection-content {
   letter-spacing: -3px;
   font-size: 36px;
   position: absolute;
-  font-family: 'Droid Sans Mono';
+  font-family: 'Droid Sans Mono', 'Hack', monospace;
+  padding-top: 20px;
 }
 .selection-content.left {
   padding-right: 20px !important;
