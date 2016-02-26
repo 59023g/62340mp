@@ -19,9 +19,6 @@ var userInput = module.exports = React.createClass({
   handleChange: function(e, i, l, f, j) {
 
     var getFormName = e.target.form.name;
-    console.log(e)
-    console.log(getFormName);
-    // console.log(e, i, l, f, j)
 
     // todo - compress this... literal eval?
     if (getFormName === "equityHoldings") {
@@ -40,7 +37,6 @@ var userInput = module.exports = React.createClass({
           isNumber: true
         }
       });
-
     }
 
     if (getFormName === "monthlyFixed") {
@@ -63,21 +59,24 @@ var userInput = module.exports = React.createClass({
     }
   },
   handleSubmit: function(e) {
+    var getFormName = e.target.name;
 
-    console.log(e);
     e.preventDefault();
-    var equityHoldings = parseInt(this.state.equityHoldings.trim());
-    if (!equityHoldings) {
+    var equityHoldings = parseInt(this.state.equityHoldings.value.trim());
+    var monthlyFixed = parseInt(this.state.monthlyFixed.value.trim());
+
+    if (!equityHoldings && !monthlyFixed) {
       return;
-    } else if ( d3Chart ) {
+    } else if ( getFormName === "equityHoldings" && d3Chart ) {
       d3Chart.userDataInit = equityHoldings;
       d3Chart.userData = [];
       d3Chart.drawUserLine();
+    } else if (getFormName === "monthlyFixed" && d3Chart ) {
+
+      console.log(monthlyFixed)
     }
 
-    this.setState({
-      equityHoldings: equityHoldings
-    });
+
 
     // todo - post for server state sync
   },
@@ -109,9 +108,8 @@ var userInput = module.exports = React.createClass({
           <input
             type = "submit"
             id = "equityHoldings"
-            name = "equityHoldings"
             className = "inputSubmit"
-            value = "Post"
+            value = "Render"
             disabled = { !this.state.equityHoldings.isNumber }
           />
 
@@ -133,9 +131,8 @@ var userInput = module.exports = React.createClass({
           <input
             type = "submit"
             id = "monthlyFixed  "
-            name = "monthlyFixed"
             className = "inputSubmit"
-            value = "Post"
+            value = "Render"
             disabled = { !this.state.monthlyFixed.isNumber }
           />
 
