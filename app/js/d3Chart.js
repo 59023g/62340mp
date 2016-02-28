@@ -55,8 +55,10 @@ var d3Chart = module.exports = (function () {
     sellDate: new Date("Sep 31 2007 00:00:00 GMT-0700 (PDT)"),
     buyDate: new Date("Tue Mar 31 2009 00:00:00 GMT-0700 (PDT)"),
     userHeld: [],
+    userMonthlyFixedData: [],
     userSold: [],
-    userDataInit: 1000,
+    userEquityHoldings: 1000,
+    userMonthlyFixed: 1000,
     get: function (url) {
       return new Promise(function (resolve, reject) {
         d3.json(url)
@@ -90,28 +92,47 @@ var d3Chart = module.exports = (function () {
       });
     },
     calculateUserHeld: function () {
+
+
       if (!_public.data) {
         console.warn('rawData not processed');
       } else {
         _public.userHeld = [];
 
         _public.data.forEach(function (d, i, a) {
-          var prev = _public.userHeld[i - 1];
+          var prevEquityHoldings = _public.userHeld[i - 1];
+          var prevMonthlyFixed = _public.userMonthlyFixedData[i - 1];
+
           var pItem = [];
+          var pItemMonthlyFixed = [];
           pItem.date = d.date;
+          pItemMonthlyFixed.date = d.date;
           pItem.close = d.close;
 
-          if (!prev) {
-            pItem.userClose = _public.userDataInit;
+
+          if (!prevEquityHoldings) {
+            pItem.userClose = _public.userEquityHoldings;
             pItem.delta = 0;
+
+            pItemMonthlyFixed.userClose = _public.userEquityHoldings;
+            pItemMonthlyFixed.delta = 0;
           } else {
-            pItem.delta = (d.close - prev.close) / prev.close;
-            pItem.userClose = +(prev.userClose + (prev.userClose * pItem.delta));
+            pItem.delta = (d.close - prevEquityHoldings.close) / prevEquityHoldings.close;
+
+            pItem.userClose = +(prevEquityHoldings.userClose + (prevEquityHoldings.userClose * pItem.delta));
+
+            pItemMonthlyFixed.delta = pItem.delta;
+
+            pItemMonthlyFixed.userClose = +((prevMonthlyFixed.userClose + _public.userMonthlyFixed) + (prevMonthlyFixed.userClose * pItem.delta));
           }
 
+
           _public.userHeld.push(pItem);
+          _public.userMonthlyFixedData.push(pItemMonthlyFixed);
 
         });
+        console.log(_public.userHeld)
+        console.log(_public.userMonthlyFixedData)
       }
     },
     calculateUserSold: function () {
@@ -153,12 +174,20 @@ var d3Chart = module.exports = (function () {
 
       });
     },
+    calculateMonthlyFixed: function() {
+
+
+    },
     drawUserLine: function () {
       _public.calculateUserHeld();
       _public.render(_public.userHeld);
+      _public.render(_public.userMonthlyFixedData);
       _public.calculateUserSold();
       _public.render(_public.userSold);
 
+    },
+    drawMonthlyFixedLine: function() {
+      _public.calculateMonthlyFixed();
     },
     render: function (data) {
 
