@@ -68,7 +68,7 @@ var userInput = module.exports = React.createClass({
     if (!equityHoldings && !monthlyFixed) {
       return;
     } else if ( getFormName === "equityHoldings" && d3Chart ) {
-      d3Chart.userDataInit = equityHoldings;
+      d3Chart.userEquityHoldings = equityHoldings;
       d3Chart.userData = [];
       d3Chart.drawUserLine();
     } else if (getFormName === "monthlyFixed" && d3Chart ) {
@@ -93,7 +93,6 @@ var userInput = module.exports = React.createClass({
     return (
       <div>
         <form
-          className = "inputForm "
           name = "equityHoldings"
           onSubmit = { this.handleSubmit } >
 
@@ -116,7 +115,6 @@ var userInput = module.exports = React.createClass({
         </form>
 
         <form
-          className = "inputForm"
           name = "monthlyFixed"
           onSubmit = { this.handleSubmit } >
 
