@@ -33,6 +33,10 @@ body {
   top: 70px;
   left: 70px
 }
+form {
+  margin: 0;
+  position: relative
+}
 .inputForm {
   height: 40px;
   width: 500px;
@@ -58,8 +62,8 @@ body {
 }
 
 .inputSubmit {
-  top: 11px;
-  right: 11px;
+  top: 1px;
+  right: 1px;
   height: 38px;
 }
 
