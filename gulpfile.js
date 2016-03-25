@@ -40,10 +40,12 @@ gulp.src = function() {
 
 // note - dist should be build artifact
 gulp.task('clean', function() {
-  del('./app/dist/**/**').then(function(paths) {
-    console.log('Deleted files and folders:\n', paths.join('\n'));
-    return;
-  });
+  del('./app/dist/**/**');
+  // todo - bug fix
+  // .then(function(paths) {
+  //   console.log('Deleted files and folders:\n', paths.join('\n'));
+  //   return;
+  // });
 });
 
 gulp.task('js:libs', function() {
