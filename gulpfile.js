@@ -50,13 +50,14 @@ gulp.task('js:libs', function() {
   return browserify()
     .require(dependencies)
     .bundle()
-    .on('error', handleErrors)
+    // todo - mp - bug fsevent module
+    // .on('error', handleErrors)
     //.pipe(uglify({ mangle: false }))
     .pipe(source('libs.js'))
     .pipe(gulp.dest('./app/dist/'));
 });
 
-// todo - mp - refactor 
+// todo - mp - refactor
 gulp.task('js:app:prod', function() {
   var props = {
     entries: './app/index.js',
