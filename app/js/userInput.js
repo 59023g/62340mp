@@ -65,19 +65,26 @@ var userInput = module.exports = React.createClass({
     var equityHoldings = parseInt(this.state.equityHoldings.value.trim());
     var monthlyFixed = parseInt(this.state.monthlyFixed.value.trim());
 
+    // not the prettiest ... because deadline
+
+    if ( getFormName === "monthlyFixed" && d3Chart ) {
+     console.log('user')
+     d3Chart.clearUserData();
+   }
+
     if (!equityHoldings && !monthlyFixed) {
       return;
     } else if ( getFormName === "equityHoldings" && d3Chart ) {
       d3Chart.userEquityHoldings = equityHoldings;
       d3Chart.userData = [];
       d3Chart.drawUserLine();
-    } else if (getFormName === "monthlyFixed" && d3Chart ) {
 
-      console.log(monthlyFixed)
+      if (monthlyFixed) {
+        d3Chart.userMonthlyFixed = monthlyFixed;
+        d3Chart.userMonthlyFixedData = [];
+        d3Chart.drawMonthlyFixedLine();
+      }
     }
-
-
-
     // todo - post for server state sync
   },
   componentDidMount: function() {
@@ -125,15 +132,12 @@ var userInput = module.exports = React.createClass({
             value = { this.state.monthlyFixed.value }
             onChange = { this.handleChange }
           />
-
           <input
             type = "submit"
-            id = "monthlyFixed  "
+            id = "monthlyFixed"
             className = "inputSubmit"
-            value = "Render"
-            disabled = { !this.state.monthlyFixed.isNumber }
+            value = "Clear"
           />
-
         </form>
 
       </div>
