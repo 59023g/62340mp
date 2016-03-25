@@ -180,7 +180,6 @@ var d3Chart = module.exports = (function () {
       if (!_public.userHeld) {
         console.warn('userHeld not processed');
       } else {
-
         arr.forEach(function (d, i, a) {
           var prevMonthlyFixed = _public.userMonthlyFixedData[i - 1];
 
@@ -301,10 +300,12 @@ var d3Chart = module.exports = (function () {
 
 
 
-      function color (d, i) {
-        var colors = [ "rgb(16,91,99)",
-                       "rgb(234,177,54)",
-                       "rgb(189,73,50)"];
+      function color(d, i) {
+        var colors = ["rgb(237, 76, 76)",
+                      "rgb(169, 234, 136)",
+                      "rgb(234, 218, 136)",
+                      "rgb(136, 160, 234)"
+                    ];
 
         return colors[i];
       }
