@@ -13,20 +13,21 @@ var gulp = require('gulp'),
 
 var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
+console.log(dependencies);
 
 var production = (process.env.NODE_ENV === 'development');
 
 gulp.task('default', ['clean', 'js:app:dev', 'js:libs']);
 gulp.task('prod', ['clean', 'js:app:prod', 'js:libs']);
 
-function handleErrors() {
-  var args = Array.prototype.slice.call(arguments);
-  notify.onError({
-    title: 'Compile Error',
-    message: '<%= error.message %>'
-  }).apply(this, args);
-  this.emit('end'); // Keep gulp from hanging on this task
-}
+// function handleErrors() {
+//   var args = Array.prototype.slice.call(arguments);
+//   notify.onError({
+//     title: 'Compile Error',
+//     message: '<%= error.message %>'
+//   }).apply(this, args);
+//   this.emit('end'); // Keep gulp from hanging on this task
+// }
 
 // https://www.timroes.de/2015/01/06/proper-error-handling-in-gulp-js/
 var gulp_src = gulp.src;
