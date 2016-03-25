@@ -213,6 +213,14 @@ var d3Chart = module.exports = (function () {
     },
     drawMonthlyFixedLine: function() {
       _public.calculateMonthlyFixed();
+      _public.render(_public.userMonthlyFixedData);
+
+    },
+    clearUserData: function() {
+      // erase all userlines, re-render with default stock data
+      dataSet = [];
+      _public.render(_public.data);
+
     },
     render: function (data) {
 
