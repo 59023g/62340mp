@@ -350,12 +350,15 @@ var d3Chart = module.exports = (function () {
         var getChartName;
         // console.log(i, datapoint);
 
+        // todo - mp - do this more efficiently, maybe add meta key to data arrays
         if (i === 0) {
           getChartName = 'Dow Jones Industrial Average';
         } else if (i === 1) {
           getChartName = 'Held equities throughout recession';
         } else if (i === 2) {
           getChartName = 'Sold equities at high, Held through recession, then bought at low';
+        } else if (i === 3 ) {
+          getChartName = 'Invested fixed amount every month, in addition to existing equity holdings';
         }
         var dateFormat = d3.time.format("%Y/%m");
 
