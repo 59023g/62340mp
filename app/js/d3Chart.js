@@ -195,14 +195,13 @@ var d3Chart = module.exports = (function () {
             pItemMonthlyFixed.userClose = (prevMonthlyFixed.userClose + _public.userMonthlyFixed) + (prevMonthlyFixed.userClose * pItemMonthlyFixed.delta);
           }
 
-          console.log(pItemMonthlyFixed)
           _public.userMonthlyFixedData.push(pItemMonthlyFixed);
 
         });
       }
     },
     drawUserLine: function () {
-      //_public.clearUserData()
+      _public.clearUserData();
       _public.calculateUserHeld();
       _public.render(_public.userHeld);
 
@@ -347,14 +346,24 @@ var d3Chart = module.exports = (function () {
 
       function drawSelectionData(i, datapoint) {
 
-        var whichClose;
+        var getClose;
+        var getChartName;
+        // console.log(i, datapoint);
+
+        if (i === 0) {
+          getChartName = 'Dow Jones Industrial Average';
+        } else if (i === 1) {
+          getChartName = 'Held equities throughout recession';
+        } else if (i === 2) {
+          getChartName = 'Sold equities at high, Held through recession, then bought at low';
+        }
         var dateFormat = d3.time.format("%Y/%m");
 
         // depending on line index define which close value to use
         if (i > 0) {
-          whichClose = datapoint.userClose;
+          getClose = datapoint.userClose;
         } else {
-          whichClose = datapoint.close;
+          getClose = datapoint.close;
         }
 
 
@@ -368,7 +377,7 @@ var d3Chart = module.exports = (function () {
           .attr("style", function() {
               return "color:" + color(datapoint,i);
           })
-          .html(numberFormat(whichClose) + "<br/>" + "<span style=\"font-size: 14px; letter-spacing: 0px;\">" + dateFormat(datapoint.date) + "</span>");
+          .html(numberFormat(getClose) + "<br/>" + "<span style=\"font-size: 14px; letter-spacing: 0px; color: rgb(250, 250, 250)\">" + dateFormat(datapoint.date) + "<br/>" + "<div class=\"divider\"></div>" + getChartName + "</span>");
 
 
         if (_private.width - (d3.event.pageX + 150) < 0) {
