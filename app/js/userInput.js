@@ -68,8 +68,18 @@ var userInput = module.exports = React.createClass({
     // not the prettiest ... because deadline
 
     if ( getFormName === "monthlyFixed" && d3Chart ) {
-     console.log('user')
+     this.setState({
+       equityHoldings: {
+         value: '',
+         isNumber: false
+       },
+       monthlyFixed: {
+         value: '',
+         isNumber: false
+       }
+     });
      d3Chart.clearUserData();
+
    }
 
     if (!equityHoldings && !monthlyFixed) {
@@ -137,6 +147,8 @@ var userInput = module.exports = React.createClass({
             id = "monthlyFixed"
             className = "inputSubmit"
             value = "Clear"
+            disabled = { !this.state.equityHoldings.isNumber }
+
           />
         </form>
 
