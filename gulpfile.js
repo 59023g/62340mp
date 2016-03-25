@@ -13,9 +13,6 @@ var gulp = require('gulp'),
 
 var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
-console.log(dependencies);
-
-var production = (process.env.NODE_ENV === 'development');
 
 gulp.task('default', ['clean', 'js:app:dev', 'js:libs']);
 gulp.task('prod', ['clean', 'js:app:prod', 'js:libs']);

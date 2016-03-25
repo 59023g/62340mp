@@ -8,8 +8,7 @@
   "scripts": {
     "watch": "nodemon index.js",
     "lint": "eslint index.js ./**/*.js",
-    "start": "node index.js ",
-    "heroku": "gulp && node index.js"
+    "start": "node index.js "
   },
   "license": "MIT",
   "dependencies": {
@@ -39,7 +38,8 @@
     "watchify": "3.7.0"
   },
   "engines": {
-    "node": "5.0.0"
+    "node": "5.0.0",
+    "npm": "3.3.6"
   },
   "devDependencies": {}
 }
