@@ -1,1 +1,1 @@
-web: heroku
+web: npm heroku
