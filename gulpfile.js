@@ -16,8 +16,7 @@ var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
 var production = (process.env.NODE_ENV === 'development');
 
-gulp.task('default', ['clean', 'js:app:dev', 'js:libs']);
-gulp.task('default', ['clean', 'js:app:prod', 'js:libs']);
+gulp.task('default', ['clean', 'js:app', 'js:libs']);
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
@@ -56,21 +55,7 @@ gulp.task('js:libs', function() {
     .pipe(gulp.dest('./app/dist/'));
 });
 
-gulp.taks('js:app:prod', function() {
-  var props = {
-    entries: './app/index.js',
-    cache: {},
-    packageCache: {},
-    verbose: true
-  };
-
-  var bundler = browserify(props);
-  bundler.transform("babelify")
-    .external(dependencies);
-  
-
-})
-gulp.task('js:app:dev', function() {
+gulp.task('js:app', function() {
   var props = {
     entries: './app/index.js',
     cache: {},
