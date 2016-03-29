@@ -14,17 +14,19 @@ var gulp = require('gulp'),
 var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
-gulp.task('default', ['clean', 'js:app:dev', 'js:libs']);
-gulp.task('prod', ['clean', 'js:app:prod', 'js:libs']);
+var production = (process.env.NODE_ENV === 'development');
 
-// function handleErrors() {
-//   var args = Array.prototype.slice.call(arguments);
-//   notify.onError({
-//     title: 'Compile Error',
-//     message: '<%= error.message %>'
-//   }).apply(this, args);
-//   this.emit('end'); // Keep gulp from hanging on this task
-// }
+gulp.task('default', ['clean', 'js:app:dev', 'js:libs']);
+gulp.task('default', ['clean', 'js:app:prod', 'js:libs']);
+
+function handleErrors() {
+  var args = Array.prototype.slice.call(arguments);
+  notify.onError({
+    title: 'Compile Error',
+    message: '<%= error.message %>'
+  }).apply(this, args);
+  this.emit('end'); // Keep gulp from hanging on this task
+}
 
 // https://www.timroes.de/2015/01/06/proper-error-handling-in-gulp-js/
 var gulp_src = gulp.src;
@@ -38,27 +40,23 @@ gulp.src = function() {
 
 // note - dist should be build artifact
 gulp.task('clean', function() {
-  del('./app/dist/**/**');
-  // todo - bug fix
-  // .then(function(paths) {
-  //   console.log('Deleted files and folders:\n', paths.join('\n'));
-  //   return;
-  // });
+  del('./app/dist/**/**').then(function(paths) {
+    console.log('Deleted files and folders:\n', paths.join('\n'));
+    return;
+  });
 });
 
 gulp.task('js:libs', function() {
   return browserify()
     .require(dependencies)
     .bundle()
-    // todo - mp - bug fsevent module
-    // .on('error', handleErrors)
+    .on('error', handleErrors)
     //.pipe(uglify({ mangle: false }))
     .pipe(source('libs.js'))
     .pipe(gulp.dest('./app/dist/'));
 });
 
-// todo - mp - refactor
-gulp.task('js:app:prod', function() {
+gulp.taks('js:app:prod', function() {
   var props = {
     entries: './app/index.js',
     cache: {},
@@ -69,19 +67,9 @@ gulp.task('js:app:prod', function() {
   var bundler = browserify(props);
   bundler.transform("babelify")
     .external(dependencies);
-  bundler.bundle()
-  .pipe(source('app.min.js'))
-  .pipe(buffer())
-  .pipe(sourcemaps.init({
-    loadMaps: true
-  }))
-  //.pipe(uglify({ mangle: false }))
-  .pipe(sourcemaps.write('./'))
-  .pipe(gulp.dest('./app/dist/'));
+  
 
-  return bundler;
-});
-
+})
 gulp.task('js:app:dev', function() {
   var props = {
     entries: './app/index.js',

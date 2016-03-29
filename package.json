@@ -6,7 +6,6 @@
   "main": "index.js",
   "author": "Michael Pierce",
   "scripts": {
-    "watch": "nodemon index.js",
     "lint": "eslint index.js ./**/*.js",
     "start": "node index.js "
   },
