@@ -17,6 +17,7 @@ var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 var production = (process.env.NODE_ENV === 'development');
 
 gulp.task('default', ['clean', 'js:app', 'js:libs']);
+gulp.task('prod', ['clean', 'js:app:prod', 'js:libs']);
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
@@ -24,7 +25,7 @@ function handleErrors() {
     title: 'Compile Error',
     message: '<%= error.message %>'
   }).apply(this, args);
-  this.emit('end'); // Keep gulp from hanging on this task
+  this.emit('end');
 }
 
 // https://www.timroes.de/2015/01/06/proper-error-handling-in-gulp-js/
@@ -55,6 +56,18 @@ gulp.task('js:libs', function() {
     .pipe(gulp.dest('./app/dist/'));
 });
 
+gulp.task('js:app:prod', function() {
+
+  return browserify('./app/index.js')
+    .transform("babelify")
+    .external(dependencies)
+    .bundle()
+    .pipe(source('app.min.js'))
+    .pipe(buffer())
+    .pipe(uglify({ mangle: true }))
+    .pipe(gulp.dest('./app/dist/'));
+
+});
 gulp.task('js:app', function() {
   var props = {
     entries: './app/index.js',
@@ -75,7 +88,6 @@ gulp.task('js:app', function() {
       .pipe(sourcemaps.init({
         loadMaps: true
       }))
-      //.pipe(uglify({ mangle: false }))
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('./app/dist/'));
   }
