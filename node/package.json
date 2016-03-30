@@ -32,14 +32,13 @@
     "request": "2.67.0",
     "resolve": "1.1.6",
     "vinyl-buffer": "1.0.0",
-    "vinyl-source-stream": "1.1.0",
-    "watchify": "3.7.0"
+    "vinyl-source-stream": "1.1.0"
   },
   "engines": {
     "node": "5.0.0",
     "npm": "3.3.6"
   },
   "devDependencies": {
-    "gulp-notify": "2.2.0"
+    "watchify": "3.7.0"
   }
 }

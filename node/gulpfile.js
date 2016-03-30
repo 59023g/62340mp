@@ -8,23 +8,16 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   plumber = require('gulp-plumber'),
   resolve = require('resolve'),
-  watchify = require('watchify'),
-  notify = require('gulp-notify');
+  watchify = require('watchify');
 
 var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
-var production = (process.env.NODE_ENV === 'development');
-
 gulp.task('default', ['clean', 'js:app', 'js:libs', 'favicon']);
 gulp.task('prod', ['clean', 'js:app:prod', 'js:libs', 'favicon']);
 
-function handleErrors() {
-  var args = Array.prototype.slice.call(arguments);
-  notify.onError({
-    title: 'Compile Error',
-    message: '<%= error.message %>'
-  }).apply(this, args);
+function handleErrors(error) {
+  gutil.log(gutil.colors.red('Compile Error \n' + error ));
   this.emit('end');
 }
 
@@ -40,14 +33,11 @@ gulp.src = function() {
 
 // note - dist should be build artifact
 gulp.task('clean', function() {
-  del('./app/dist/**/**').then(function(paths) {
-    console.log('Deleted files and folders:\n', paths.join('\n'));
-    return;
-  });
+  del('./app/dist/**/**');
 });
 
 gulp.task('favicon', function() {
-  return gulp.src('./app/img/favicon/**')
+  return gulp.src('./app/img/favicon/*')
     .pipe(gulp.dest('./app/dist/'));
 });
 
@@ -55,7 +45,7 @@ gulp.task('js:libs', function() {
   return browserify()
     .require(dependencies)
     .bundle()
-    // .on('error', handleErrors)
+    .on('error', handleErrors)
     //.pipe(uglify({ mangle: false }))
     .pipe(source('libs.js'))
     .pipe(gulp.dest('./app/dist/'));
@@ -66,6 +56,7 @@ gulp.task('js:app:prod', function() {
     .transform("babelify")
     .external(dependencies)
     .bundle()
+    .on('error', handleErrors)
     .pipe(source('app.min.js'))
     .pipe(buffer())
     .pipe(uglify({ mangle: true }))
