@@ -1,0 +1,117 @@
+/* todo - mp - not make this an afterthought, but it works for now */
+
+body {
+  font: 10px sans-serif;
+  font-family: 'Droid Sans Mono', 'Hack';
+  background: rgb(37, 41, 41)
+}
+.axis path, .axis line {
+  fill: none;
+  stroke: rgb(250, 250, 250);
+  display: none;
+
+  shape-rendering: crispEdges;
+}
+.axis text {
+  color: rgb(250, 250, 250);
+  fill: white
+}
+.x.axis path {
+  display: none;
+}
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+.user-line {
+  fill: none;
+  stroke: red;
+  stroke-width: 1.5px;
+}
+.svg-container {
+  /*min-width: 1280px;*/
+  /*margin-top: 70px;*/
+}
+.line {
+  stroke-opacity: 1
+}
+#input {
+  position: absolute;
+  bottom: 100px;
+  left: 70px
+}
+form {
+  margin: 5px;
+  position: relative
+}
+.inputForm {
+  height: 40px;
+  width: 500px;
+  padding: 10px;
+  font-size: 12px;
+  font-family: 'Droid Sans Mono', serif;
+  position: relative;
+  border: none
+}
+:focus {
+  outline: none;
+}
+.inputSubmit {
+  position: absolute;
+  display: block;
+  width: 100px;
+  padding: 10px;
+  -webkit-appearance: none;
+  background: rgb(141, 229, 97);
+  font-family: 'Droid Sans Mono', monospace;
+  border: none;
+  border-left: .25px solid rgba(200, 200, 200, 0.6);
+  cursor: pointer;
+}
+::-webkit-input-placeholder {
+  color: rgb(37, 41, 41)
+}
+.inputSubmit {
+  top: 0px;
+  right: 0px;
+  height: 40px;
+}
+
+.inputSubmit:disabled {
+  background-color: white;
+}
+
+#chart { }
+
+.selection {
+  background-color: rgb(222, 222, 220);
+  bottom: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 1px;
+}
+
+.divider {
+  border-top: 1px solid white;
+  margin: 10px -20px;
+}
+.selection-content {
+  letter-spacing: -3px;
+  font-size: 36px;
+  position: absolute;
+  font-family: 'Droid Sans Mono', 'Hack', monospace;
+  padding-top: 20px;
+}
+.selection-content.left {
+  padding-right: 20px !important;
+  right: 0 !important;
+  padding-left: 0 !important;
+  left: initial !important;
+}
+.selection-content.right {
+  left: 0;
+  padding-left: 20px;
+}
