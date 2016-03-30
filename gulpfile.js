@@ -16,8 +16,8 @@ var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
 var production = (process.env.NODE_ENV === 'development');
 
-gulp.task('default', ['clean', 'js:app', 'js:libs']);
-gulp.task('prod', ['clean', 'js:app:prod', 'js:libs']);
+gulp.task('default', ['clean', 'js:app', 'js:libs', 'favicon']);
+gulp.task('prod', ['clean', 'js:app:prod', 'js:libs', 'favicon']);
 
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
@@ -46,18 +46,22 @@ gulp.task('clean', function() {
   });
 });
 
+gulp.task('favicon', function() {
+  return gulp.src('./app/img/favicon/**')
+    .pipe(gulp.dest('./app/dist/'));
+});
+
 gulp.task('js:libs', function() {
   return browserify()
     .require(dependencies)
     .bundle()
-    .on('error', handleErrors)
+    // .on('error', handleErrors)
     //.pipe(uglify({ mangle: false }))
     .pipe(source('libs.js'))
     .pipe(gulp.dest('./app/dist/'));
 });
 
 gulp.task('js:app:prod', function() {
-
   return browserify('./app/index.js')
     .transform("babelify")
     .external(dependencies)
@@ -68,6 +72,7 @@ gulp.task('js:app:prod', function() {
     .pipe(gulp.dest('./app/dist/'));
 
 });
+
 gulp.task('js:app', function() {
   var props = {
     entries: './app/index.js',
