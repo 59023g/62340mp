@@ -28,4 +28,6 @@ ADD . /src
 EXPOSE  8080
 
 # Run app using nodemon
-CMD ["/src/node_modules/gulp/bin/gulp.js"]
+
+RUN /src/node_modules/gulp/bin/gulp.js prod
+CMD ["nodemon", "/src/index.js"]
