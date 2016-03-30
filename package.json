@@ -21,7 +21,6 @@
     "eslint": "1.10.3",
     "express": "4.13.3",
     "gulp": "3.9.0",
-    "gulp-notify": "2.2.0",
     "gulp-plumber": "^1.0.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.1",
@@ -40,5 +39,7 @@
     "node": "5.0.0",
     "npm": "3.3.6"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gulp-notify": "2.2.0"
+  }
 }
