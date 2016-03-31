@@ -2,7 +2,7 @@
 
 body {
   font: 10px sans-serif;
-  font-family: 'Droid Sans Mono', 'Hack';
+  font-family: 'Courier', monospace;
   background: rgb(37, 41, 41)
 }
 .axis path, .axis line {
@@ -30,10 +30,6 @@ body {
   stroke: red;
   stroke-width: 1.5px;
 }
-.svg-container {
-  /*min-width: 1280px;*/
-  /*margin-top: 70px;*/
-}
 .line {
   stroke-opacity: 1
 }
@@ -50,8 +46,8 @@ form {
   height: 40px;
   width: 500px;
   padding: 10px;
-  font-size: 12px;
-  font-family: 'Droid Sans Mono', serif;
+  font-size: 14px;
+  font-family: 'Courier', monospace;
   position: relative;
   border: none
 }
@@ -65,7 +61,7 @@ form {
   padding: 10px;
   -webkit-appearance: none;
   background: rgb(141, 229, 97);
-  font-family: 'Droid Sans Mono', monospace;
+  font-family: 'Courier', monospace;
   border: none;
   border-left: .25px solid rgba(200, 200, 200, 0.6);
   cursor: pointer;
@@ -102,7 +98,7 @@ form {
   letter-spacing: -3px;
   font-size: 36px;
   position: absolute;
-  font-family: 'Droid Sans Mono', 'Hack', monospace;
+  font-family: 'Courier', monospace;
   padding-top: 20px;
 }
 .selection-content.left {
