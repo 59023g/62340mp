@@ -10,8 +10,7 @@ var gulp = require('gulp'),
   resolve = require('resolve'),
   watchify = require('watchify');
 
-var packageJson = require('./package.json');
-var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
+var dependencies = ['d3', 'react', 'react-dom'];
 
 gulp.task('default', ['clean', 'js:app', 'js:libs', 'favicon']);
 gulp.task('prod', ['clean', 'js:app:prod', 'js:libs', 'favicon']);
@@ -43,11 +42,13 @@ gulp.task('favicon', function() {
 
 gulp.task('js:libs', function() {
   return browserify()
+    .transform("babelify")
     .require(dependencies)
     .bundle()
     .on('error', handleErrors)
-    //.pipe(uglify({ mangle: false }))
     .pipe(source('libs.js'))
+    .pipe(buffer())
+    .pipe(uglify({ mangle: true, compress: true  }))
     .pipe(gulp.dest('./app/dist/'));
 });
 
@@ -59,7 +60,7 @@ gulp.task('js:app:prod', function() {
     .on('error', handleErrors)
     .pipe(source('app.min.js'))
     .pipe(buffer())
-    .pipe(uglify({ mangle: true }))
+    .pipe(uglify({ mangle: true, compress: true  }))
     .pipe(gulp.dest('./app/dist/'));
 
 });
