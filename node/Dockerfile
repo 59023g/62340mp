@@ -17,7 +17,7 @@ RUN npm install -g nodemon@1.8.1
 
 # Provides cached layer for node_modules
 ADD package.json /tmp/package.json
-RUN cd /tmp && npm install
+RUN cd /tmp && npm install --verbose
 RUN mkdir -p /src && cp -a /tmp/node_modules /src/
 
 # Define working directory
