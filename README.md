@@ -1,3 +1,12 @@
-27341f - Project - WIP 01
+27341f - Project - 1.0 - 2016 03 31
 
-Demonstrate pre-crash sell and hold position using Node, Express, Browserify, React, D3. Also see if the new hip is actually the right new hip.
+Context: 
+
+An attempt to get my Dad to have his retirement less tied-up in the current equities market. Aims to demonstrate value of pre-crash sell and hold position using Debian, Docker, NodeJS, Express, Browserify, React, and D3. Also to see if the new hip (React) is actually the right new hip.
+
+To Start:
+
+```
+docker-compose build
+docker-compose up -d
+```
