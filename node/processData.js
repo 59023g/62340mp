@@ -1,8 +1,7 @@
 var _         = require('lodash'),
   request     = require('request'),
   fs          = require('fs'),
-  q           = require('q'),
-  d3          = require('d3');
+  q           = require('q');
 
 var startDate = '2005-01-14',
   endDate     = '2015-11-01',
