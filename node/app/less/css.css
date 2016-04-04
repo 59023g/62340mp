@@ -3,7 +3,7 @@
 body {
   font: 10px sans-serif;
   font-family: 'Courier', monospace;
-  background: rgb(37, 41, 41)
+  background: rgb(31, 31, 34)
 }
 .axis path, .axis line {
   fill: none;
@@ -39,7 +39,7 @@ body {
   left: 70px
 }
 form {
-  margin: 5px;
+  margin: 5px 0px;
   position: relative
 }
 .inputForm {
@@ -49,13 +49,17 @@ form {
   font-size: 14px;
   font-family: 'Courier', monospace;
   position: relative;
-  border: none
+  border: none;
+  border-radius: 0px;
+  margin-right: 5px
 }
 :focus {
   outline: none;
 }
 .inputSubmit {
-  position: absolute;
+  height: 40px;
+  position: relative;
+  float: right;
   display: block;
   width: 100px;
   padding: 10px;
@@ -63,23 +67,14 @@ form {
   background: rgb(141, 229, 97);
   font-family: 'Courier', monospace;
   border: none;
-  border-left: .25px solid rgba(200, 200, 200, 0.6);
   cursor: pointer;
 }
 ::-webkit-input-placeholder {
   color: rgb(37, 41, 41)
 }
-.inputSubmit {
-  top: 0px;
-  right: 0px;
-  height: 40px;
-}
-
 .inputSubmit:disabled {
   background-color: white;
 }
-
-#chart { }
 
 .selection {
   background-color: rgb(222, 222, 220);
@@ -110,4 +105,12 @@ form {
 .selection-content.right {
   left: 0;
   padding-left: 20px;
+}
+
+@media (max-width: 600px) {
+  form { width: 100%; float: left }
+  #input { left: 0; }
+  .inputForm { width: 73%; width: calc(100% - 105px) }
+  .inputSubmit { width: 20%; width: 100px }
+
 }
