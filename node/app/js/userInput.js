@@ -13,7 +13,10 @@ var userInput = module.exports = React.createClass({
       equityHoldings: {
         value: '',
         isNumber: false
-      }
+      },
+      clearable: false,
+      submitted: false
+
     };
   },
   handleChange: function(e, i, l, f, j) {
@@ -27,7 +30,8 @@ var userInput = module.exports = React.createClass({
           equityHoldings: {
             value: '',
             isNumber: false
-          }
+          },
+          clearable: false
         });
         return;
       }
@@ -35,7 +39,9 @@ var userInput = module.exports = React.createClass({
         equityHoldings: {
           value: e.target.value,
           isNumber: true
-        }
+        },
+        clearable: true,
+        submitted: false
       });
     }
 
@@ -45,7 +51,8 @@ var userInput = module.exports = React.createClass({
           monthlyFixed: {
             value: '',
             isNumber: false
-          }
+          },
+          clearable: false
         });
         return;
       }
@@ -53,7 +60,9 @@ var userInput = module.exports = React.createClass({
         monthlyFixed: {
           value: e.target.value,
           isNumber: true
-        }
+        },
+        clearable: true,
+        submitted: false
       });
 
     }
@@ -62,10 +71,6 @@ var userInput = module.exports = React.createClass({
     var getFormName = e.target.name;
 
     e.preventDefault();
-    var equityHoldings = parseInt(this.state.equityHoldings.value.trim());
-    var monthlyFixed = parseInt(this.state.monthlyFixed.value.trim());
-
-    // not the prettiest ... because deadline
 
     if ( getFormName === "monthlyFixed" && d3Chart ) {
      this.setState({
@@ -76,11 +81,16 @@ var userInput = module.exports = React.createClass({
        monthlyFixed: {
          value: '',
          isNumber: false
-       }
+       },
+       clearable: false
      });
      d3Chart.clearUserData();
-
    }
+
+    var equityHoldings = parseInt(this.state.equityHoldings.value.trim());
+    var monthlyFixed = parseInt(this.state.monthlyFixed.value.trim());
+
+    // not the prettiest ... because deadline
 
     if (!equityHoldings && !monthlyFixed) {
       return;
@@ -88,7 +98,10 @@ var userInput = module.exports = React.createClass({
       d3Chart.userEquityHoldings = equityHoldings;
       d3Chart.userData = [];
       d3Chart.drawUserLine();
-
+      this.setState({
+        clearable: true,
+        submitted: true
+       });
       if (monthlyFixed) {
         d3Chart.userMonthlyFixed = monthlyFixed;
         d3Chart.userMonthlyFixedData = [];
@@ -126,7 +139,7 @@ var userInput = module.exports = React.createClass({
             id = "equityHoldings"
             className = "inputSubmit"
             value = "Render"
-            disabled = { !this.state.equityHoldings.isNumber }
+            disabled = { !this.state.equityHoldings.isNumber || this.state.submitted }
           />
 
         </form>
@@ -147,7 +160,7 @@ var userInput = module.exports = React.createClass({
             id = "monthlyFixed"
             className = "inputSubmit"
             value = "Clear"
-            disabled = { !this.state.equityHoldings.isNumber }
+            disabled = { !this.state.clearable }
 
           />
         </form>
