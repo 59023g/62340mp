@@ -1,0 +1,22 @@
+{
+  "name": "node",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "author": "Michael Pierce",
+  "scripts": {
+    "lint": "eslint index.js ./**/*.js",
+    "start": "node index.js "
+  },
+  "license": "MIT",
+  "dependencies": {
+
+  },
+  "engines": {
+    "node": "5.0.0",
+    "npm": "3.3.6"
+  },
+  "devDependencies": {
+  }
+}
