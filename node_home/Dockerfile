@@ -30,4 +30,4 @@ EXPOSE  3000
 # Run app using nodemon
 
 RUN /src/node_modules/gulp/bin/gulp.js prod
-CMD ["nodemon", "micro", "-p 3000", "./index.js"]
+CMD ["nodemon", "micro", "./index.js"]
