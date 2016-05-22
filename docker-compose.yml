@@ -8,3 +8,7 @@ node1:
     build: ./node
     ports:
         - "8080"
+node2:
+    build: ./node_home/
+    ports:
+        - "3000"

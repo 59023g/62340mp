@@ -25,9 +25,9 @@ WORKDIR /src
 ADD . /src
 
 # Expose port
-EXPOSE  8080
+EXPOSE  3000
 
 # Run app using nodemon
 
 RUN /src/node_modules/gulp/bin/gulp.js prod
-CMD ["nodemon", "/src/index.js"]
+CMD ["nodemon", "micro", "-p 3000", "./index.js"]
