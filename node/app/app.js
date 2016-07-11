@@ -8,7 +8,7 @@ var App = module.exports = (function() {
           return (
               <html>
                   <head>
-                  <link rel="stylesheet" href="css.css"/>
+                  <link rel="stylesheet" href="./css.css"/>
                       <meta name="viewport" content="width=device-width,initial-scale=1.0" />
                       <title>
                           fin.mep
@@ -23,8 +23,8 @@ var App = module.exports = (function() {
                       <div id='input'></div>
                     </div>
 
-                    <script src="libs.js"></script>
-                    <script src="app.min.js"></script>
+                    <script src="./libs.js"></script>
+                    <script src="./app.min.js"></script>
                   </body>
               </html>
           );

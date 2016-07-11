@@ -13,7 +13,7 @@ RUN git clone https://github.com/tj/n && \
     n 5.0.0
 
 # Install nodemon
-RUN npm install -g nodemon@1.8.1
+RUN npm install -g micro   
 
 # Provides cached layer for node_modules
 ADD package.json /tmp/package.json
@@ -28,6 +28,7 @@ ADD . /src
 EXPOSE  3000
 
 # Run app using nodemon
+#RUN micro
 
 # RUN /src/node_modules/gulp/bin/gulp.js prod
-CMD ["nodemon", "micro", "./index.js"]
+CMD ["micro", "./index.js"]

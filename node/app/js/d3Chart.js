@@ -408,6 +408,6 @@ var d3Chart = module.exports = (function () {
 })();
 
 // todo - separate draw axis, etc from the line(s)
-d3Chart.get("/data")
+d3Chart.get("/fin/data")
   .then(d3Chart.processRaw)
   .then(d3Chart.render);

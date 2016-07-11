@@ -10,21 +10,24 @@ module.exports= (
     h3 {
       margin: 0;
       padding: 0
-    }
+   }
+   ul { padding-left: 20px; } 
   </style>
   <script type="text/javascript">
     var timerStart = Date.now()
   </script>
 </head>
 <h2>Michael Pierce</h2>
-<h3>Develop & Design</h3>
 <ul>
+  <li>Frontend, UI, Web Developer</li>
+  <li>Design and business background</li>
   <li>San Francisco #1032194</li>
-  <li>Currently working with <a href="http://nimasensor.com">6SensorLabs</a> (devops, graphics, frontend)</li>
-  <li><a href="https://github.com/59023g">GitHub</a></li>
+  <li>Current client: <a href="http://nimasensor.com">6SensorLabs</a> (devops, graphics, frontend)</li>
+  <li>App built with docker, nodejs, express, react, and d3: <a href="/fin">Link</a></li>
   <li>Use <a href="https://activecollab.com">AC</a> for project management and invoicing</li>
   <li>This site loaded in <span class="noJs">(no JS)</span><span class="loadTime"></span> milliseconds</li>
   <li><a href="mailto:hi@mep.im">Say hi</a></li>
+  <li><a href="https://github.com/59023g">Github</a></li>
 
 </ul>
 <script type="text/javascript">
