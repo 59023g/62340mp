@@ -29,5 +29,5 @@ EXPOSE  3000
 
 # Run app using nodemon
 
-RUN /src/node_modules/gulp/bin/gulp.js prod
+# RUN /src/node_modules/gulp/bin/gulp.js prod
 CMD ["nodemon", "micro", "./index.js"]
