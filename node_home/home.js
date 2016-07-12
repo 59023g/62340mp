@@ -4,6 +4,9 @@ module.exports= (
   <title>Michael Pierce - San Francisco - 6969339</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <meta name="description" content="Michael Pierce - San Francisco - 6969339">
+  <link rel="icon" type="image/png" href="./fin/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="./fin/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="./fin/favicon-32x32.png" sizes="32x32">
   <style>
     h1,
     h2,
