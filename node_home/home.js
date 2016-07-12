@@ -12,6 +12,7 @@ module.exports= (
       padding: 0
    }
    ul { padding-left: 20px; }
+   body { margin: 36px 24px; }
   </style>
   <script type="text/javascript">
     var timerStart = Date.now()
@@ -36,15 +37,19 @@ module.exports= (
 </ul>
 
 <img style="width: 300px" src="https://www.dropbox.com/s/rozgoi555jgd562/logo_2016_0503.png?raw=1" alt="Michael Pierce - San Francisco - 6969339">
+
 <script type="text/javascript">
 document.onreadystatechange = function () {
   switch (document.readyState) {
-    case "complete":
-      document.querySelector('.loadTime').textContent = window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart;
+    case "interactive":
+      console.log(window.performance.timing)
+      var time = window.performance.timing.domLoading - window.performance.timing.navigationStart;
+      document.querySelector('.loadTime').textContent = time;
       document.querySelector('.noJs').remove();
       break;
   }
 }
 </script>
+
 `
 )
