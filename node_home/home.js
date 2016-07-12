@@ -30,8 +30,8 @@ module.exports= (
   <li>San Francisco #1032194</li>
 </ul>
 <ul>
-  <li>App built with Unix, Docker, Nodejs, Express, React, and D3: <a href="/fin" target="_blank">Link</a></li>
-  <li>This site rendered in <span class="noJs">(no JS)</span><span class="loadTime"></span> milliseconds</li>
+  <li>Example app built with Unix, Docker, Nodejs, Express, React, and D3: <a href="/fin" target="_blank">Link</a></li>
+  <li>This page rendered in <span class="noJs">(no JS)</span><span class="loadTime"></span> milliseconds</li>
   <li><a href="https://github.com/59023g" target="_blank">Github</a></li>
 
 </ul>
