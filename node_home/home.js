@@ -36,7 +36,7 @@ module.exports= (
 
 </ul>
 
-<img style="width: 300px" src="https://www.dropbox.com/s/rozgoi555jgd562/logo_2016_0503.png?raw=1" alt="Michael Pierce - San Francisco - 6969339">
+<img style="max-width: 300px; width: 100%" src="https://www.dropbox.com/s/rozgoi555jgd562/logo_2016_0503.png?raw=1" alt="Michael Pierce - San Francisco - 6969339">
 
 <script type="text/javascript">
 document.onreadystatechange = function () {
