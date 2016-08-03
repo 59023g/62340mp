@@ -27,7 +27,7 @@ module.exports= (
   </style>
 </head>
 <ul>
-  <li>Current client: <a href="http://nimasensor.com" target="_blank">6SensorLabs</a> (devops, graphics, ecommerce, UI)</li>
+ <li>Current Customer: <a href="http://time.com/4115398/best-inventions-2015/item/the-sensor-that-sniffs-out-gluten/"  target="_blank">6SensorLabs</a> (devops, graphics, ecommerce, UI)</li>
   <li>Currently expanding</li>
   <li><a href="mailto:hi@mep.im">Say hi</a></li>
 </ul>
