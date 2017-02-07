@@ -27,7 +27,7 @@ module.exports= (
   </style>
 </head>
 <ul>
- <li>Current Customer: <a href="http://time.com/4115398/best-inventions-2015/item/the-sensor-that-sniffs-out-gluten/"  target="_blank">Nima Labs</a> (Devops, Graphics, UI, Express API)</li>
+ <li>Current Customer: <a href="https://nimasensor.com/press/"  target="_blank">Nima Labs</a> (JavaScript)</li>
   <li>Currently expanding</li>
   <li><a href="mailto:hi@mep.im">Say hi</a></li>
 </ul>
@@ -35,10 +35,10 @@ module.exports= (
   <li>JavaScript, UI, frontend, server, web application developer</li>
   <li>Design (CSS) and business background</li>
   <li>Sole Proprietor - San Francisco #1032194</li>
-  <li>6 years experience (Self-taught). UW-Madison graduate</li>
+  <li>6 years experience. UW-Madison graduate</li>
 </ul>
 <ul>
-  <li>Example app built with Unix, Docker, Nodejs, Express, React, and D3: <a href="/fin" target="_blank">Link</a></li>
+  <li>Tiny app: <a href="/fin" target="_blank">Link</a></li>
   <li>This page rendered in <span class="noJs">(no JS)</span><span class="loadTime"></span> milliseconds</li>
   <li><a href="https://github.com/59023g" target="_blank">Github</a></li>
 
