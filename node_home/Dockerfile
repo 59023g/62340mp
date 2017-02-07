@@ -12,9 +12,6 @@ RUN git clone https://github.com/tj/n && \
     make install && \
     n lts
 
-# Install nodemon
-# RUN npm install -g micro@1.0.3   
-
 # Provides cached layer for node_modules
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
@@ -27,8 +24,4 @@ ADD . /src
 # Expose port
 EXPOSE  3000
 
-# Run app using nodemon
-#RUN micro
-
-# RUN /src/node_modules/gulp/bin/gulp.js prod
 CMD ["npm", "start"]
