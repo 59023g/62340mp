@@ -10,14 +10,14 @@ RUN apt-get update && \
 RUN git clone https://github.com/tj/n && \
     cd n && \
     make install && \
-    n 5.0.0
+    n lts
 
 # Install nodemon
-RUN npm install -g micro   
+# RUN npm install -g micro@1.0.3   
 
 # Provides cached layer for node_modules
 ADD package.json /tmp/package.json
-RUN cd /tmp && npm install --verbose
+RUN cd /tmp && npm install
 RUN mkdir -p /src && cp -a /tmp/node_modules /src/
 
 # Define working directory
@@ -31,4 +31,4 @@ EXPOSE  3000
 #RUN micro
 
 # RUN /src/node_modules/gulp/bin/gulp.js prod
-CMD ["micro", "./index.js"]
+CMD ["npm", "start"]
