@@ -5,7 +5,7 @@ const request = require( 'request-promise' );
 const cheerio = require( 'cheerio' );
 
   // 1 hour = 3600000ms
-const intervalCheck = 3600000 ;
+const intervalCheck = 3600000;
 
 let parseBody = ( res ) => {
   let timeNow = new Date().getTime()
@@ -21,6 +21,10 @@ let parseBody = ( res ) => {
     if ( isWithinTheHour( postTime, timeNow ) ) results.push( [ url ] )
 
   } );
+
+  if ( results.length === 0 ) {
+    return Promise.reject( 'no results' )
+  }
 
   return Promise.resolve( results )
 }
@@ -123,20 +127,6 @@ let run = () => {
     .then( result => console.log( 'result success' ) )
     .catch( err => console.log( err ) )
 }
-
-
-twilio.messages.create( {
-  body: 'initiated',
-  to: '+14156969339',
-  from: secrets.from
-}, function( err, data ) {
-  if ( err ) {
-    console.error( 'Could not notify administrator' );
-    console.error( err );
-  } else {
-    console.log('initiated')
-  }
-} )
 
 run();
 // every hour
