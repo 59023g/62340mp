@@ -4,8 +4,8 @@ const twilio = require( 'twilio' )( secrets.twilioSid, secrets.twilioSecret );
 const request = require( 'request-promise' );
 const cheerio = require( 'cheerio' );
 
-// 1 hour = 3600000ms
-const intervalCheck = 3600000;
+  // 1 hour = 3600000ms
+const intervalCheck = 3600000 ;
 
 let parseBody = ( res ) => {
   let timeNow = new Date().getTime()
@@ -83,24 +83,20 @@ let sendSms = ( results ) => {
   return new Promise( ( resolve, reject ) => {
     let loopPromiseArr = [];
 
-    results = [ 'hello' ]
-    // todo promise array
     for ( let i = 0; i < results.length; i++ ) {
-      loopPromiseArr.push(
-        twilio.messages.create( {
-          body: 'tests',
-          to: secrets.to,
-          from: secrets.from
-        }, function( err, data ) {
-          if ( err ) {
-            console.error( 'Could not notify administrator' );
-            console.error( err );
-            return Promise.reject( `Error sending SMS: ${ err }` )
-          } else {
-            return Promise.resolve( `Success sending SMS` )
-          }
-        } )
-      )
+      loopPromiseArr.push( twilio.messages.create( {
+        body: results[ i ][ 0 ],
+        to: secrets.to,
+        from: secrets.from
+      }, function( err, data ) {
+        if ( err ) {
+          console.error( 'Could not notify administrator' );
+          console.error( err );
+          return Promise.reject( `Error sending SMS: ${ err }` )
+        } else {
+          return Promise.resolve( `Success sending SMS` )
+        }
+      } ) )
 
     }
 
@@ -117,7 +113,6 @@ let sendSms = ( results ) => {
 }
 
 let run = () => {
-
   request( {
       uri: secrets.hostName + secrets.reqPath,
       resolveWithFullResponse: true
@@ -129,7 +124,6 @@ let run = () => {
     .catch( err => console.log( err ) )
 }
 
-// every hour
 
 twilio.messages.create( {
   body: 'initiated',
@@ -139,13 +133,13 @@ twilio.messages.create( {
   if ( err ) {
     console.error( 'Could not notify administrator' );
     console.error( err );
-    // return Promise.reject( `Error sending SMS: ${ err }` )
   } else {
     console.log('initiated')
-    // return Promise.resolve( `Success sending SMS` )
   }
 } )
 
+run();
+// every hour
 setInterval( run, intervalCheck )
 
 
@@ -153,7 +147,6 @@ setInterval( run, intervalCheck )
 
 let isWithinTheHour = ( postTime, timeNow ) => {
   let diff = timeNow - postTime.getTime()
-
   if ( diff <= intervalCheck ) {
     return true
   }
