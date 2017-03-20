@@ -3,6 +3,7 @@ nginx:
     links:
         - node1:node1
         - node2:node2
+        - node3:node3
     ports:
         - "80:80"
 node1:
@@ -13,3 +14,7 @@ node2:
     build: ./node_home/
     ports:
         - "3000"
+node3:
+    build: ./node_scrape/
+    ports:
+        - "4000"
