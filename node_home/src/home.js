@@ -22,18 +22,43 @@ module.exports= (
       margin: 0;
       padding: 0
    }
-   ul { padding-left: 20px; }
-   body { margin: 36px 24px; }
-  </style>
+   ul { padding-left: 20px; margin-bottom: 24px }
+ 
+   body {
+       padding: 16px 24px;
+	       max-width: 448px;
+	       box-sizing: border-box;
+	       background: #212121;
+	       margin: 48px 24px;
+	       border-top-left-radius: 11px;
+	       border-top-right-radius: 11px;
+	       border-top: 24px solid #303030;
+    line-height: 1.3 
+   }
+   li { margin-bottom: 6px; list-style-type: circle }
+   html { 
+	   font-family: menlo;
+	       font-size: 12px;
+	       color: white;
+	       text-rendering: optimizeLegibility;
+	       -webkit-font-smoothing: antialiased;
+	       background: black;}
+
+	a { text-decoration: none; color: mediumaquamarine }
+	
+</style>
 </head>
 <ul>
- <li>Current Customer: <a href="https://nimasensor.com/press/"  target="_blank">Nima Labs</a> (JavaScript)</li>
-  <li>Currently expanding</li>
+<li> Current: <a href='https://theconstituent.net'>The Constituent</a></li>
+<li> Current: <a href='https://localcoinportfolio.com'>local-coin_portfolio</a> ( Crypto portfolio tracker with no data stored on server )</li>
+<li>Past:  Cisco/AppDynamics - AppD Labs ( Patent pending. Work presented during <a href='https://www.youtube.com/watch?v=dNaUTzewPrk&feature=youtu.be&t=8m59s' target='_blank'>2017 AppD Summit Keynote</a> )</li>	
+ <li>Past:  <a href="https://nimasensor.com/press/" target="_blank">Nima Labs, Inc</a> ( JavaScript )  </li>
+ <li> Past: ALTX ( Acquired by <a href='https://addepar.com' target='_blank'>Addepar</a> ) </li>
   <li><a href="mailto:hi@mep.im">Say hi</a></li>
 </ul>
 <ul>
-  <li>JavaScript, UI, frontend, server, web application developer</li>
-  <li>Design (CSS) and business background</li>
+  <li>JavaScript, App Architecture</li>
+  <li>Design ( CSS ) and business background</li>
   <li>Sole Proprietor - San Francisco #1032194</li>
   <li>6 years experience. UW-Madison graduate</li>
 </ul>
