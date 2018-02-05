@@ -21,4 +21,5 @@ services:
         ports:
             - "4000"
         volumes:
-            - ./db:/db           
+            - ./db:/src/db
+            - ./media:/src/public/media           
