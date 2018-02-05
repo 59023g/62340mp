@@ -1,4 +1,5 @@
-# init and renew letsencrypt: docker-compose exec nginx /etc/nginx/ssl/certbot.sh -v
+# init and renew letsencrypt:
+# docker-compose exec nginx /etc/nginx/ssl/certbot.sh -v
 FROM nginx:1.11.3-alpine
 
 RUN apk update \

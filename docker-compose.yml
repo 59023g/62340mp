@@ -20,3 +20,5 @@ services:
         build: ./post
         ports:
             - "4000"
+        volumes:
+            - ./db:./db           
