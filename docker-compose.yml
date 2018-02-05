@@ -1,15 +1,31 @@
-nginx:
-    build: ./nginx
-    links:
-        - node1:node1
-        - node2:node2
-    ports:
-        - "80:80"
-node1:
-    build: ./node
-    ports:
-        - "8080"
-node2:
-    build: ./node_home/
-    ports:
-        - "3000"
+services:
+  nginx:
+      build: ./nginx
+      links:
+          - node1:node1
+          - node2:node2
+      ports:
+          - "80:80"
+          - "443:443"
+      volumes:
+        - letsencrypt_certs:/etc/nginx/certs
+        - letsencrypt_www:/var/www/letsencrypt
+      restart: always
+  letsencrypt:
+    build: ./certbot
+    command: /bin/true
+    volumes:
+      - letsencrypt_certs:/etc/letsencrypt
+      - letsencrypt_www:/var/www/letsencrypt
+  node1:
+      build: ./node/
+      ports:
+          - "8080"
+  node2:
+      build: ./post/
+      ports:
+          - "4000"
+
+volumes:
+  letsencrypt_certs: ~
+  letsencrypt_www: ~

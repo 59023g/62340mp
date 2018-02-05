@@ -2,3 +2,4 @@
 /node/app/dist
 /node_home/node_modules
 npm-debug.log
+.env
