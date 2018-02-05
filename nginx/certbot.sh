@@ -1,8 +1,7 @@
 #!/bin/bash
 set -e
 
-# set TOS="--agree-tos" in your env to auto-agree.
-# `certbot certonly` will ask for your confirmation otherwise.
+# special thanks to https://github.com/diresi
 
 BASEDIR=${BASEDIR:-/etc/letsencrypt}
 LIVEDIR=${LIVEDIR:-${BASEDIR}/live}
