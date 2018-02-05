@@ -21,4 +21,4 @@ services:
         ports:
             - "4000"
         volumes:
-            - ./db:./db           
+            - ./db:/db           
